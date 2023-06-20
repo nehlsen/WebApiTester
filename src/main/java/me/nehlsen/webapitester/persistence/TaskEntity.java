@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-abstract public class TaskEntity {
+abstract class TaskEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
