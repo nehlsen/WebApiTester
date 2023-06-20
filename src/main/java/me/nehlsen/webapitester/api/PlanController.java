@@ -5,6 +5,8 @@ import me.nehlsen.webapitester.plan.PlanFactory;
 import me.nehlsen.webapitester.plan.PlanRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,6 +31,13 @@ public class PlanController {
     public ResponseEntity<PlanDto> createPlan(CreatePlanRequestData planDto) {
         Plan plan = planFactory.createPlanFromDto(planDto);
         planRepository.save(plan);
+
+        return ResponseEntity.ok(planDtoFactory.fromPlan(plan));
+    }
+
+    @GetMapping(path = "/{uuid}")
+    public ResponseEntity<PlanDto> getPlan(@PathVariable String uuid) {
+        Plan plan = planRepository.findByUuid(uuid);
 
         return ResponseEntity.ok(planDtoFactory.fromPlan(plan));
     }

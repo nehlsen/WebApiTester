@@ -94,4 +94,18 @@ class PlanControllerTest {
         assertThat(createdPlanDto.getTasks().get(0).getName()).isEqualTo("my task name");
         assertThat(createdPlanDto.getTasks().get(0).getUri()).isEqualTo("http://the-url.com");
     }
+
+    @Test
+    public void get_plan() {
+        final PlanDto planDto = planController.getPlan("af70b1d3-ad41-4d9f-b44a-f3cc7524d142").getBody();
+
+        assertThat(planDto).isNotNull();
+        assertThat(planDto.getUuid()).isEqualTo("af70b1d3-ad41-4d9f-b44a-f3cc7524d142");
+        assertThat(planDto.getName()).isEqualTo("some Plan from repo");
+        assertThat(planDto.getTasks()).isNotEmpty();
+        assertThat(planDto.getTasks().get(0)).isInstanceOf(TaskDto.class);
+        assertThat(planDto.getTasks().get(0).getType()).isEqualTo("http_get");
+        assertThat(planDto.getTasks().get(0).getName()).isEqualTo("task from repo");
+        assertThat(planDto.getTasks().get(0).getUri()).isEqualTo("scheme://host/path");
+    }
 }

@@ -14,7 +14,7 @@ public class PlanDtoFactory {
 
     public PlanDto fromPlan(Plan plan) {
         return new PlanDto(
-                plan.getUuid(),
+                plan.getUuid().toString(),
                 plan.getName(),
                 plan.getTasks().stream().map(taskDtoFactory::fromTask).toList()
         );
