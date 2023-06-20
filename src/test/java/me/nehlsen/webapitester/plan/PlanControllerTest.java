@@ -6,16 +6,15 @@ import me.nehlsen.webapitester.api.PlanDto;
 import me.nehlsen.webapitester.api.PlanDtoFactory;
 import me.nehlsen.webapitester.api.TaskDto;
 import me.nehlsen.webapitester.api.TaskDtoFactory;
-import me.nehlsen.webapitester.task.HttpGetTask;
 import me.nehlsen.webapitester.task.TaskFactory;
 import me.nehlsen.webapitester.task.UnknownTaskTypeException;
-import me.nehlsen.webapitester.task.VoidTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PlanControllerTest {
 
@@ -49,7 +48,7 @@ class PlanControllerTest {
 
         assertThat(createdPlanDto).isNotNull();
         assertThat(createdPlanDto.getUuid()).isNotNull();
-        assertThat(createdPlanDto.getUuid().toString()).isNotEmpty();
+        assertThat(createdPlanDto.getUuid()).isNotEmpty();
         assertThat(createdPlanDto.getName()).isEqualTo(requestPlanDto.getName());
     }
 
