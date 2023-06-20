@@ -6,7 +6,10 @@ import me.nehlsen.webapitester.api.PlanDto;
 import me.nehlsen.webapitester.api.PlanDtoFactory;
 import me.nehlsen.webapitester.api.TaskDto;
 import me.nehlsen.webapitester.api.TaskDtoFactory;
+import me.nehlsen.webapitester.task.HttpGetTask;
 import me.nehlsen.webapitester.task.TaskFactory;
+import me.nehlsen.webapitester.task.UnknownTaskTypeException;
+import me.nehlsen.webapitester.task.VoidTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,20 +43,55 @@ class PlanControllerTest {
     }
 
     @Test
-    public void a_created_plan_has_requested_name_and_random_uuid() {
+    public void a_created_plan_has_requested_name_and_some_uuid() {
         CreatePlanRequestData requestPlanDto = new CreatePlanRequestData("created in unit test", List.of());
         PlanDto createdPlanDto = planController.createPlan(requestPlanDto).getBody();
 
+        assertThat(createdPlanDto).isNotNull();
         assertThat(createdPlanDto.getUuid()).isNotNull();
         assertThat(createdPlanDto.getUuid().toString()).isNotEmpty();
         assertThat(createdPlanDto.getName()).isEqualTo(requestPlanDto.getName());
     }
 
     @Test
-    public void a_created_plan_has_requested_number_of_tasks() {
-        CreatePlanRequestData requestPlanDto = new CreatePlanRequestData("my plan", List.of(new TaskDto()));
+    public void create_plan_with_null_task_type_throws_exception() {
+        CreatePlanRequestData requestPlanDto = new CreatePlanRequestData("my plan", List.of(new TaskDto(null, null, null)));
+
+        assertThatThrownBy(() -> planController.createPlan(requestPlanDto).getBody())
+                .isInstanceOf(UnknownTaskTypeException.class)
+                .hasMessage("Task Type \"\" not found");
+    }
+
+    @Test
+    public void create_plan_with_unknown_task_type_throws_exception() {
+        CreatePlanRequestData requestPlanDto = new CreatePlanRequestData("my plan", List.of(new TaskDto("booBaa", null, null)));
+
+        assertThatThrownBy(() -> planController.createPlan(requestPlanDto).getBody())
+                .isInstanceOf(UnknownTaskTypeException.class)
+                .hasMessage("Task Type \"booBaa\" not found");
+    }
+
+    @Test
+    public void a_created_plan_has_requested_task_with_void_type() {
+        CreatePlanRequestData requestPlanDto = new CreatePlanRequestData("my plan", List.of(new TaskDto("void", null, null)));
         PlanDto createdPlanDto = planController.createPlan(requestPlanDto).getBody();
 
-        assertThat(createdPlanDto.getTasks()).hasSize(1);
+        assertThat(createdPlanDto).isNotNull();
+        assertThat(createdPlanDto.getTasks()).isNotEmpty();
+        assertThat(createdPlanDto.getTasks().get(0)).isInstanceOf(TaskDto.class);
+        assertThat(createdPlanDto.getTasks().get(0).getType()).isEqualTo("void");
+    }
+
+    @Test
+    public void a_created_plan_has_requested_task_with_http_get_type_and_properties() {
+        CreatePlanRequestData requestPlanDto = new CreatePlanRequestData("my plan", List.of(new TaskDto("http_get", "my task name", "http://the-url.com")));
+        PlanDto createdPlanDto = planController.createPlan(requestPlanDto).getBody();
+
+        assertThat(createdPlanDto).isNotNull();
+        assertThat(createdPlanDto.getTasks()).isNotEmpty();
+        assertThat(createdPlanDto.getTasks().get(0)).isInstanceOf(TaskDto.class);
+        assertThat(createdPlanDto.getTasks().get(0).getType()).isEqualTo("http_get");
+        assertThat(createdPlanDto.getTasks().get(0).getName()).isEqualTo("my task name");
+        assertThat(createdPlanDto.getTasks().get(0).getUri()).isEqualTo("http://the-url.com");
     }
 }

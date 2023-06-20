@@ -11,6 +11,8 @@ import java.util.List;
 public interface Task {
     int DEFAULT_REQUEST_TIMEOUT_SECONDS = 10;
 
+    String getName();
+
     URI getUri();
 
     default HttpRequest createRequest(HttpRequest.Builder builder) {

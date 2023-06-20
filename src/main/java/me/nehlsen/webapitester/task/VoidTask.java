@@ -7,6 +7,11 @@ import java.util.List;
 
 public class VoidTask implements Task {
     @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
     public URI getUri() {
         return null;
     }

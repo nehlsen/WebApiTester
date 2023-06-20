@@ -11,6 +11,9 @@ import java.util.List;
 public class HttpGetTask implements Task {
 
     @Getter
+    String name;
+
+    @Getter
     URI uri;
 
     @Getter
