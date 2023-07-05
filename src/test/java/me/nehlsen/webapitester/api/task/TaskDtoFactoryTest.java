@@ -1,7 +1,5 @@
-package me.nehlsen.webapitester.api;
+package me.nehlsen.webapitester.api.task;
 
-import me.nehlsen.webapitester.api.task.TaskDto;
-import me.nehlsen.webapitester.api.task.TaskDtoFactory;
 import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
 import me.nehlsen.webapitester.persistence.task.TaskEntity;
 import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
@@ -58,6 +56,6 @@ class TaskDtoFactoryTest {
         Mockito.when(taskEntity.getUuid()).thenReturn(mockUuid);
 
         final UnknownTaskTypeException unknownTaskTypeException = assertThrows(UnknownTaskTypeException.class, () -> taskDtoFactory.fromEntity(taskEntity));
-        assertThat(unknownTaskTypeException.getMessage()).contains("Task Type not supported");
+        assertThat(unknownTaskTypeException).hasMessageContaining("Task Type not supported");
     }
 }

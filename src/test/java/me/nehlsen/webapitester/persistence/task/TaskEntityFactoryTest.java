@@ -1,17 +1,26 @@
-package me.nehlsen.webapitester.persistence;
+package me.nehlsen.webapitester.persistence.task;
 
 import me.nehlsen.webapitester.api.task.CreateTaskDto;
-import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
-import me.nehlsen.webapitester.persistence.task.TaskEntity;
-import me.nehlsen.webapitester.persistence.task.TaskEntityFactory;
-import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
+import me.nehlsen.webapitester.persistence.task.assertion.AssertionEntityFactory;
 import me.nehlsen.webapitester.task.UnknownTaskTypeException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TaskEntityFactoryTest {
+
+    private TaskEntityFactory taskEntityFactory;
+
+    @BeforeEach
+    void setUp() {
+        final AssertionEntityFactory assertionEntityFactory = Mockito.mock(AssertionEntityFactory.class);
+        Mockito.verifyNoInteractions(assertionEntityFactory);
+
+        taskEntityFactory = new TaskEntityFactory(assertionEntityFactory);
+    }
+
     @Test
     public void create_void_task_with_name_and_uri_but_no_assertions() {
         final TaskEntityFactory taskEntityFactory = new TaskEntityFactory();
@@ -43,6 +52,6 @@ class TaskEntityFactoryTest {
         final CreateTaskDto taskDto = new CreateTaskDto("unknown_type", "another task name", "http://the-url.com");
 
         final UnknownTaskTypeException unknownTaskTypeException = assertThrows(UnknownTaskTypeException.class, () -> taskEntityFactory.newTask(taskDto));
-        assertThat(unknownTaskTypeException.getMessage()).isEqualTo("Task Type \"unknown_type\" not found");
+        assertThat(unknownTaskTypeException).hasMessage("Task Type \"unknown_type\" not supported");
     }
 }
