@@ -1,5 +1,8 @@
 package me.nehlsen.webapitester.api;
 
+import me.nehlsen.webapitester.api.plan.PlanDto;
+import me.nehlsen.webapitester.api.plan.PlanDtoFactory;
+import me.nehlsen.webapitester.api.task.TaskDtoFactory;
 import me.nehlsen.webapitester.persistence.PlanEntity;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -8,7 +11,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PlanDtoFactoryTest {
     @Test

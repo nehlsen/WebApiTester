@@ -1,5 +1,6 @@
-package me.nehlsen.webapitester.api;
+package me.nehlsen.webapitester.api.plan;
 
+import me.nehlsen.webapitester.api.task.TaskDtoFactory;
 import me.nehlsen.webapitester.persistence.PlanEntity;
 import org.springframework.stereotype.Component;
 

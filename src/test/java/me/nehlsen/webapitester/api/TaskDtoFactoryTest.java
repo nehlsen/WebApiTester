@@ -1,5 +1,7 @@
 package me.nehlsen.webapitester.api;
 
+import me.nehlsen.webapitester.api.task.TaskDto;
+import me.nehlsen.webapitester.api.task.TaskDtoFactory;
 import me.nehlsen.webapitester.persistence.HttpGetTaskEntity;
 import me.nehlsen.webapitester.persistence.TaskEntity;
 import me.nehlsen.webapitester.persistence.VoidTaskEntity;

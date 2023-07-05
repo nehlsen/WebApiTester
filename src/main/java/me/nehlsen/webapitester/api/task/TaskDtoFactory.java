@@ -1,4 +1,4 @@
-package me.nehlsen.webapitester.api;
+package me.nehlsen.webapitester.api.task;
 
 import me.nehlsen.webapitester.persistence.HttpGetTaskEntity;
 import me.nehlsen.webapitester.persistence.TaskEntity;

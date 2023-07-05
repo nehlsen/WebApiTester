@@ -1,10 +1,9 @@
-package me.nehlsen.webapitester.api;
+package me.nehlsen.webapitester.api.task;
 
 import lombok.Value;
 
 @Value
-public class TaskDto {
-    String uuid;
+public class CreateTaskDto {
     String type;
     String name;
     String uri;

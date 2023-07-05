@@ -1,6 +1,6 @@
 package me.nehlsen.webapitester.persistence;
 
-import me.nehlsen.webapitester.api.CreatePlanDto;
+import me.nehlsen.webapitester.api.plan.CreatePlanDto;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

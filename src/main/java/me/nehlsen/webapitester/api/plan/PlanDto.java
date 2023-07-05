@@ -1,6 +1,7 @@
-package me.nehlsen.webapitester.api;
+package me.nehlsen.webapitester.api.plan;
 
 import lombok.Value;
+import me.nehlsen.webapitester.api.task.TaskDto;
 
 import java.util.List;
 

@@ -1,5 +1,8 @@
 package me.nehlsen.webapitester.api;
 
+import me.nehlsen.webapitester.api.plan.CreatePlanDto;
+import me.nehlsen.webapitester.api.plan.PlanDto;
+import me.nehlsen.webapitester.api.plan.PlanDtoFactory;
 import me.nehlsen.webapitester.persistence.DataAccess;
 import me.nehlsen.webapitester.persistence.PlanEntity;
 import org.springframework.http.ResponseEntity;

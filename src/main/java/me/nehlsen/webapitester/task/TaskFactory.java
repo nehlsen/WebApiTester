@@ -1,6 +1,6 @@
 package me.nehlsen.webapitester.task;
 
-import me.nehlsen.webapitester.api.TaskDto;
+import me.nehlsen.webapitester.api.task.TaskDto;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;

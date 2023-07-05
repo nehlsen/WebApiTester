@@ -1,6 +1,6 @@
 package me.nehlsen.webapitester.persistence;
 
-import me.nehlsen.webapitester.api.CreatePlanDto;
+import me.nehlsen.webapitester.api.plan.CreatePlanDto;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;

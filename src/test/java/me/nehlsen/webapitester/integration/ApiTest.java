@@ -1,9 +1,9 @@
 package me.nehlsen.webapitester.integration;
 
-import me.nehlsen.webapitester.api.CreatePlanDto;
-import me.nehlsen.webapitester.api.CreateTaskDto;
-import me.nehlsen.webapitester.api.PlanDto;
-import me.nehlsen.webapitester.api.TaskDto;
+import me.nehlsen.webapitester.api.plan.CreatePlanDto;
+import me.nehlsen.webapitester.api.task.CreateTaskDto;
+import me.nehlsen.webapitester.api.plan.PlanDto;
+import me.nehlsen.webapitester.api.task.TaskDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
