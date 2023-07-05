@@ -5,7 +5,7 @@ import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
 import me.nehlsen.webapitester.persistence.task.TaskEntity;
 import me.nehlsen.webapitester.persistence.task.TaskEntityFactory;
 import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
-import me.nehlsen.webapitester.task.UnknownTaskTypeException;
+import me.nehlsen.webapitester.persistence.task.UnknownTaskTypeException;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
