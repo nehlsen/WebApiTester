@@ -1,6 +1,9 @@
 package me.nehlsen.webapitester.persistence;
 
 import me.nehlsen.webapitester.api.plan.CreatePlanDto;
+import me.nehlsen.webapitester.persistence.plan.PlanEntity;
+import me.nehlsen.webapitester.persistence.plan.PlanEntityFactory;
+import me.nehlsen.webapitester.persistence.task.TaskEntityFactory;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

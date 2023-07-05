@@ -1,6 +1,10 @@
 package me.nehlsen.webapitester.persistence;
 
 import me.nehlsen.webapitester.api.task.CreateTaskDto;
+import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
+import me.nehlsen.webapitester.persistence.task.TaskEntity;
+import me.nehlsen.webapitester.persistence.task.TaskEntityFactory;
+import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
 import me.nehlsen.webapitester.task.UnknownTaskTypeException;
 import org.junit.jupiter.api.Test;
 

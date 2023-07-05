@@ -1,4 +1,4 @@
-package me.nehlsen.webapitester.persistence;
+package me.nehlsen.webapitester.persistence.task.assertion;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

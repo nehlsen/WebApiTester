@@ -1,6 +1,6 @@
 package me.nehlsen.webapitester.task;
 
-import me.nehlsen.webapitester.persistence.TaskEntity;
+import me.nehlsen.webapitester.persistence.task.TaskEntity;
 
 public class UnknownTaskTypeException extends RuntimeException {
     public UnknownTaskTypeException(String message) {

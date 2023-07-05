@@ -1,9 +1,9 @@
 package me.nehlsen.webapitester.api.task;
 
-import me.nehlsen.webapitester.persistence.HttpGetTaskEntity;
-import me.nehlsen.webapitester.persistence.TaskEntity;
-import me.nehlsen.webapitester.persistence.TaskEntityFactory;
-import me.nehlsen.webapitester.persistence.VoidTaskEntity;
+import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
+import me.nehlsen.webapitester.persistence.task.TaskEntity;
+import me.nehlsen.webapitester.persistence.task.TaskEntityFactory;
+import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
 import me.nehlsen.webapitester.task.UnknownTaskTypeException;
 import org.springframework.stereotype.Component;
 

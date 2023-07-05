@@ -3,7 +3,7 @@ package me.nehlsen.webapitester.api;
 import me.nehlsen.webapitester.api.plan.PlanDto;
 import me.nehlsen.webapitester.api.plan.PlanDtoFactory;
 import me.nehlsen.webapitester.api.task.TaskDtoFactory;
-import me.nehlsen.webapitester.persistence.PlanEntity;
+import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

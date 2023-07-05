@@ -2,9 +2,9 @@ package me.nehlsen.webapitester.api;
 
 import me.nehlsen.webapitester.api.task.TaskDto;
 import me.nehlsen.webapitester.api.task.TaskDtoFactory;
-import me.nehlsen.webapitester.persistence.HttpGetTaskEntity;
-import me.nehlsen.webapitester.persistence.TaskEntity;
-import me.nehlsen.webapitester.persistence.VoidTaskEntity;
+import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
+import me.nehlsen.webapitester.persistence.task.TaskEntity;
+import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
 import me.nehlsen.webapitester.task.UnknownTaskTypeException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

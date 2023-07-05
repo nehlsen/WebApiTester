@@ -4,7 +4,7 @@ import me.nehlsen.webapitester.api.plan.CreatePlanDto;
 import me.nehlsen.webapitester.api.plan.PlanDto;
 import me.nehlsen.webapitester.api.plan.PlanDtoFactory;
 import me.nehlsen.webapitester.persistence.DataAccess;
-import me.nehlsen.webapitester.persistence.PlanEntity;
+import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

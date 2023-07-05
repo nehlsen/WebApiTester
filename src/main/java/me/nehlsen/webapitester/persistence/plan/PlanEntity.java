@@ -1,4 +1,4 @@
-package me.nehlsen.webapitester.persistence;
+package me.nehlsen.webapitester.persistence.plan;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +8,7 @@ import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import me.nehlsen.webapitester.persistence.task.TaskEntity;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 

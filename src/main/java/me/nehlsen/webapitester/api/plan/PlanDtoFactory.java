@@ -1,7 +1,7 @@
 package me.nehlsen.webapitester.api.plan;
 
 import me.nehlsen.webapitester.api.task.TaskDtoFactory;
-import me.nehlsen.webapitester.persistence.PlanEntity;
+import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;

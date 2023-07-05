@@ -1,4 +1,4 @@
-package me.nehlsen.webapitester.persistence;
+package me.nehlsen.webapitester.persistence.task;
 
 import me.nehlsen.webapitester.api.task.CreateTaskDto;
 import me.nehlsen.webapitester.task.UnknownTaskTypeException;
