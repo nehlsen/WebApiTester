@@ -37,12 +37,11 @@ public class ApiTest {
     }
 
     @Test
-    void create_plan_with_name_and_tasks() {
-        final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity(
-                "/plan/",
-                new CreatePlanDto("some plan with task", List.of(new CreateTaskDto("void", "empty task", "needs://a-valid.url"))),
-                PlanDto.class
-        );
+    void create_plan_with_name_and_tasks_but_no_assertions() {
+        final CreateTaskDto taskDto = new CreateTaskDto("void", "empty task", "needs://a-valid.url", List.of());
+        final CreatePlanDto planDto = new CreatePlanDto("some plan with task", List.of(taskDto));
+
+        final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plan/", planDto, PlanDto.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();

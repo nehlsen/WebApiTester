@@ -5,6 +5,8 @@ import me.nehlsen.webapitester.persistence.task.TaskEntityFactory;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PlanEntityFactoryTest {

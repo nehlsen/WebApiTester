@@ -11,8 +11,4 @@ import java.util.List;
 public class CreatePlanDto {
     String name;
     List<CreateTaskDto> tasks;
-
-    public CreatePlanDto(String name) {
-        this(name, List.of());
-    }
 }
