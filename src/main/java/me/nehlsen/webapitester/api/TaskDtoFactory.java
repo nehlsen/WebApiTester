@@ -4,6 +4,7 @@ import me.nehlsen.webapitester.persistence.HttpGetTaskEntity;
 import me.nehlsen.webapitester.persistence.TaskEntity;
 import me.nehlsen.webapitester.persistence.TaskEntityFactory;
 import me.nehlsen.webapitester.persistence.VoidTaskEntity;
+import me.nehlsen.webapitester.task.UnknownTaskTypeException;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
@@ -13,6 +14,8 @@ import java.util.Objects;
 public class TaskDtoFactory {
 
     public TaskDto fromEntity(TaskEntity task) {
+        Objects.requireNonNull(task, "TaskDtoFactory::fromEntity: requires non null TaskEntity");
+
         return new TaskDto(
                 task.getUuid().toString(),
                 taskType(task),
@@ -29,6 +32,6 @@ public class TaskDtoFactory {
             return TaskEntityFactory.TASK_TYPE_HTTP_GET;
         }
 
-        throw new RuntimeException();
+        throw UnknownTaskTypeException.ofTypeEntity(task);
     }
 }

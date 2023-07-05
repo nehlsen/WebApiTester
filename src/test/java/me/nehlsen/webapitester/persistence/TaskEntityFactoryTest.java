@@ -1,11 +1,11 @@
 package me.nehlsen.webapitester.persistence;
 
 import me.nehlsen.webapitester.api.CreateTaskDto;
-import me.nehlsen.webapitester.api.TaskDto;
+import me.nehlsen.webapitester.task.UnknownTaskTypeException;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TaskEntityFactoryTest {
     @Test
@@ -30,5 +30,15 @@ class TaskEntityFactoryTest {
         assertThat(taskEntity.getName()).isEqualTo(taskDto.getName());
         assertThat(taskEntity.getUri().toString()).isEqualTo(taskDto.getUri());
         assertThat(taskEntity).isInstanceOf(HttpGetTaskEntity.class);
+    }
+
+    @Test
+    public void create_unknown_task_type() {
+        final TaskEntityFactory taskEntityFactory = new TaskEntityFactory();
+
+        final CreateTaskDto taskDto = new CreateTaskDto("unknown_type", "another task name", "http://the-url.com");
+
+        final UnknownTaskTypeException unknownTaskTypeException = assertThrows(UnknownTaskTypeException.class, () -> taskEntityFactory.newTask(taskDto));
+        assertThat(unknownTaskTypeException.getMessage()).isEqualTo("Task Type \"unknown_type\" not found");
     }
 }

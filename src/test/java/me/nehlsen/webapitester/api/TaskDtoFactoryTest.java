@@ -3,13 +3,15 @@ package me.nehlsen.webapitester.api;
 import me.nehlsen.webapitester.persistence.HttpGetTaskEntity;
 import me.nehlsen.webapitester.persistence.TaskEntity;
 import me.nehlsen.webapitester.persistence.VoidTaskEntity;
+import me.nehlsen.webapitester.task.UnknownTaskTypeException;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.net.URI;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TaskDtoFactoryTest {
     @Test
@@ -42,5 +44,18 @@ class TaskDtoFactoryTest {
         assertThat(taskDto.getName()).isEqualTo(httpGetTaskEntity.getName());
         assertThat(taskDto.getUri()).isEqualTo(httpGetTaskEntity.getUri().toString());
         assertThat(taskDto.getType()).isEqualTo("http_get");
+    }
+
+    @Test
+    public void create_from_unknown_task_entity() {
+        final TaskDtoFactory taskDtoFactory = new TaskDtoFactory();
+
+        UUID mockUuid = Mockito.mock(UUID.class);
+        Mockito.when(mockUuid.toString()).thenReturn("faked mock UUID");
+        TaskEntity taskEntity = Mockito.mock(TaskEntity.class);
+        Mockito.when(taskEntity.getUuid()).thenReturn(mockUuid);
+
+        final UnknownTaskTypeException unknownTaskTypeException = assertThrows(UnknownTaskTypeException.class, () -> taskDtoFactory.fromEntity(taskEntity));
+        assertThat(unknownTaskTypeException.getMessage()).contains("Task Type not supported");
     }
 }
