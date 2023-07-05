@@ -13,8 +13,11 @@ import lombok.Setter;
 import me.nehlsen.webapitester.persistence.task.assertion.AssertionEntity;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,4 +40,10 @@ public abstract class TaskEntity {
     @OneToMany
     @Cascade(CascadeType.ALL)
     List<AssertionEntity> assertions;
+
+    @CreationTimestamp
+    Date created;
+
+    @UpdateTimestamp
+    Date updated;
 }
