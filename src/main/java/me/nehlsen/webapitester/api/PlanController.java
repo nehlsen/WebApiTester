@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(path = "plan")
 public class PlanController {
 
-
     private final DataAccess dataAccess;
     private final PlanDtoFactory planDtoFactory;
 

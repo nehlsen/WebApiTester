@@ -9,7 +9,7 @@ public class UnknownTaskTypeException extends RuntimeException {
 
     public static UnknownTaskTypeException ofTypeString(String taskType) {
         return new UnknownTaskTypeException(String.format(
-                "Task Type \"%s\" not found",
+                "Task Type \"%s\" not supported",
                 taskType
         ));
     }

@@ -11,6 +11,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseStatusCodeEntity extends TaskAssertionEntity {
-    int expectedStatusCode;
+public class RequestTimeAssertionEntity extends AssertionEntity {
+    long maximumRequestTimeMillis;
 }
