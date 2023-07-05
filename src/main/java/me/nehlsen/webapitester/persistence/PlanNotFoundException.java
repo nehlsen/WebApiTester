@@ -1,4 +1,4 @@
-package me.nehlsen.webapitester.plan;
+package me.nehlsen.webapitester.persistence;
 
 public class PlanNotFoundException extends RuntimeException {
     public PlanNotFoundException(String message) {

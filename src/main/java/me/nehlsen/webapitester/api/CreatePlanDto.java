@@ -5,7 +5,7 @@ import lombok.Value;
 import java.util.List;
 
 @Value
-public class CreatePlanRequestData {
+public class CreatePlanDto {
     String name;
-    List<TaskDto> tasks;
+    List<CreateTaskDto> tasks;
 }

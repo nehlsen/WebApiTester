@@ -1,7 +1,9 @@
 package me.nehlsen.webapitester.persistence;
 
 import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
 
 @Entity
-class VoidTaskEntity extends TaskEntity {
+@NoArgsConstructor
+public class VoidTaskEntity extends TaskEntity {
 }

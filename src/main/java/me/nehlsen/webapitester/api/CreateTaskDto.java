@@ -3,8 +3,7 @@ package me.nehlsen.webapitester.api;
 import lombok.Value;
 
 @Value
-public class TaskDto {
-    String uuid;
+public class CreateTaskDto {
     String type;
     String name;
     String uri;
