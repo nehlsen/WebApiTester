@@ -1,5 +1,6 @@
 package me.nehlsen.webapitester.api.task;
 
+import me.nehlsen.webapitester.api.assertion.AssertionDtoFactory;
 import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
 import me.nehlsen.webapitester.persistence.task.TaskEntity;
 import me.nehlsen.webapitester.persistence.task.TaskEntityFactory;
@@ -13,6 +14,12 @@ import java.util.Objects;
 @Component
 public class TaskDtoFactory {
 
+    private final AssertionDtoFactory assertionDtoFactory;
+
+    public TaskDtoFactory(AssertionDtoFactory assertionDtoFactory) {
+        this.assertionDtoFactory = assertionDtoFactory;
+    }
+
     public TaskDto fromEntity(TaskEntity task) {
         Objects.requireNonNull(task, "TaskDtoFactory::fromEntity: requires non null TaskEntity");
 
@@ -20,7 +27,8 @@ public class TaskDtoFactory {
                 task.getUuid().toString(),
                 taskType(task),
                 task.getName(),
-                Objects.requireNonNullElse(task.getUri(), URI.create("")).toString()
+                Objects.requireNonNullElse(task.getUri(), URI.create("")).toString(),
+                task.getAssertions().stream().map(assertionDtoFactory::fromEntity).toList()
         );
     }
 
