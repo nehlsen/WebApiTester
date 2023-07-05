@@ -6,6 +6,8 @@ import me.nehlsen.webapitester.api.plan.CreatePlanDto;
 import me.nehlsen.webapitester.api.task.CreateTaskDto;
 import me.nehlsen.webapitester.api.plan.PlanDto;
 import me.nehlsen.webapitester.api.task.TaskDto;
+import me.nehlsen.webapitester.persistence.DataAccess;
+import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +26,9 @@ public class ApiTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
+
+    @Autowired
+    private DataAccess dataAccess;
 
     @Test
     void create_plan_with_name_and_no_tasks_is_returned_and_has_a_uuid_assigned() {
@@ -80,5 +85,18 @@ public class ApiTest {
         assertThat(firstAssertion.getType()).isEqualTo("response_status_code");
         assertThat(firstAssertion.getParameters()).isNotEmpty();
         assertThat(firstAssertion.getParameters()).contains(entry("expectedStatusCode", "200"));
+    }
+
+    @Test
+    public void get_plan() {
+        final PlanEntity simplePlan = dataAccess.saveNew(new CreatePlanDto("the simplest plan possible", List.of()));
+        final String simplePlanUuid = simplePlan.getUuid().toString();
+
+        final ResponseEntity<PlanDto> planResponse = testRestTemplate.getForEntity("/plan/%s".formatted(simplePlanUuid), PlanDto.class);
+        final PlanDto plan = planResponse.getBody();
+        assertThat(plan).isNotNull();
+        assertThat(plan.getUuid()).isNotEmpty();
+        assertThat(plan.getName()).isEqualTo("the simplest plan possible");
+        assertThat(plan.getTasks()).isNotNull().isEmpty();
     }
 }
