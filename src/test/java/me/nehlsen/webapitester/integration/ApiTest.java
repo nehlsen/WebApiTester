@@ -1,5 +1,6 @@
 package me.nehlsen.webapitester.integration;
 
+import me.nehlsen.webapitester.api.ScheduleResponse;
 import me.nehlsen.webapitester.api.assertion.AssertionDto;
 import me.nehlsen.webapitester.api.assertion.CreateAssertionDto;
 import me.nehlsen.webapitester.api.plan.CreatePlanDto;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -35,6 +37,21 @@ public class ApiTest {
         final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity(
                 "/plan/",
                 new CreatePlanDto("a new test plan", List.of()),
+                PlanDto.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getUuid()).isNotEmpty();
+        assertThat(response.getBody().getName()).isEqualTo("a new test plan");
+        assertThat(response.getBody().getTasks()).isEmpty();
+    }
+
+    @Test
+    void create_plan_with_tasks_list_is_null_does_not_throw_exception() {
+        final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity(
+                "/plan/",
+                new CreatePlanDto("a new test plan", null),
                 PlanDto.class
         );
 
@@ -93,10 +110,26 @@ public class ApiTest {
         final String simplePlanUuid = simplePlan.getUuid().toString();
 
         final ResponseEntity<PlanDto> planResponse = testRestTemplate.getForEntity("/plan/%s".formatted(simplePlanUuid), PlanDto.class);
+        assertThat(planResponse.getStatusCode().is2xxSuccessful()).isTrue();
+
         final PlanDto plan = planResponse.getBody();
         assertThat(plan).isNotNull();
         assertThat(plan.getUuid()).isNotEmpty();
         assertThat(plan.getName()).isEqualTo("the simplest plan possible");
         assertThat(plan.getTasks()).isNotNull().isEmpty();
+    }
+
+    @Test
+    public void run_plan() {
+        final PlanEntity simplePlan = dataAccess.saveNew(new CreatePlanDto("the simplest plan possible", List.of()));
+        final String simplePlanUuid = simplePlan.getUuid().toString();
+
+        final ResponseEntity<ScheduleResponse> response = testRestTemplate.postForEntity("/plan/%s/run".formatted(simplePlanUuid), null, ScheduleResponse.class);
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+
+        final ScheduleResponse scheduleResponse = response.getBody();
+        assertThat(scheduleResponse).isNotNull();
+        assertThat(scheduleResponse.isSuccess()).isTrue();
+        assertThat(scheduleResponse.getMessage()).isEqualTo("Plan has been scheduled to run: now");
     }
 }

@@ -5,6 +5,7 @@ import me.nehlsen.webapitester.api.plan.PlanDto;
 import me.nehlsen.webapitester.api.plan.PlanDtoFactory;
 import me.nehlsen.webapitester.persistence.DataAccess;
 import me.nehlsen.webapitester.persistence.plan.PlanEntity;
+import me.nehlsen.webapitester.run.scheduler.RunScheduler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,13 +20,16 @@ public class PlanController {
 
     private final DataAccess dataAccess;
     private final PlanDtoFactory planDtoFactory;
+    private final RunScheduler runScheduler;
 
     public PlanController(
             DataAccess dataAccess,
-            PlanDtoFactory planDtoFactory
+            PlanDtoFactory planDtoFactory,
+            RunScheduler runScheduler
     ) {
         this.dataAccess = dataAccess;
         this.planDtoFactory = planDtoFactory;
+        this.runScheduler = runScheduler;
     }
 
     @PostMapping(path = "/")
@@ -40,5 +44,13 @@ public class PlanController {
         final PlanEntity planEntity = dataAccess.findByUuid(uuid);
 
         return ResponseEntity.ok(planDtoFactory.fromEntity(planEntity));
+    }
+
+    @PostMapping(path = "/{uuid}/run")
+    public ResponseEntity<ScheduleResponse> runPlan(@PathVariable String uuid) {
+        final PlanEntity planEntity = dataAccess.findByUuid(uuid);
+        runScheduler.scheduleNow(planEntity);
+
+        return ResponseEntity.ok(new ScheduleResponse(true, "Plan has been scheduled to run: now"));
     }
 }

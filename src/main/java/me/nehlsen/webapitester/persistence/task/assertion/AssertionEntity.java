@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "assertion")
+@Table(name = "t_assertion")
 @Getter
 @Setter
 @NoArgsConstructor
