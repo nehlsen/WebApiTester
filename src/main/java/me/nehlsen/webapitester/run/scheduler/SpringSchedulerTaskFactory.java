@@ -1,7 +1,7 @@
 package me.nehlsen.webapitester.run.scheduler;
 
-import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import me.nehlsen.webapitester.run.PlanRunner;
+import me.nehlsen.webapitester.run.dto.PlanDto;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,7 +13,7 @@ public class SpringSchedulerTaskFactory {
         this.planRunner = planRunner;
     }
 
-    public SpringSchedulerTask create(PlanEntity plan) {
+    public SpringSchedulerTask create(PlanDto plan) {
         return new SpringSchedulerTask(planRunner, plan);
     }
 }

@@ -1,12 +1,10 @@
 package me.nehlsen.webapitester.api.plan;
 
 import me.nehlsen.webapitester.api.task.TaskDtoFactory;
+import me.nehlsen.webapitester.fixture.PlanEntityFixture;
 import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,10 +15,7 @@ class PlanDtoFactoryTest {
         Mockito.verifyNoInteractions(taskDtoFactory);
         final PlanDtoFactory planDtoFactory = new PlanDtoFactory(taskDtoFactory);
 
-        PlanEntity planEntity = new PlanEntity();
-        planEntity.setUuid(UUID.fromString("af70b1d3-ad41-4d9f-b44a-f3cc7524d142"));
-        planEntity.setName("a test plan");
-        planEntity.setTasks(List.of());
+        PlanEntity planEntity = PlanEntityFixture.planWithoutTasks();
 
         final PlanDto planDto = planDtoFactory.fromEntity(planEntity);
         assertThat(planDto.getUuid()).isEqualTo(planEntity.getUuid().toString());

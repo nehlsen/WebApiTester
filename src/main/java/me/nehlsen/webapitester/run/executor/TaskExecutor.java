@@ -1,10 +1,10 @@
 package me.nehlsen.webapitester.run.executor;
 
-import me.nehlsen.webapitester.persistence.task.TaskEntity;
 import me.nehlsen.webapitester.run.context.TaskExecutionContext;
+import me.nehlsen.webapitester.run.dto.TaskDto;
 
 public interface TaskExecutor {
-    boolean supports(TaskEntity task);
+    boolean supports(TaskDto task);
 
     void execute(TaskExecutionContext context);
 }

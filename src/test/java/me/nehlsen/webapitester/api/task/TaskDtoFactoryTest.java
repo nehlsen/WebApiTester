@@ -1,6 +1,7 @@
 package me.nehlsen.webapitester.api.task;
 
 import me.nehlsen.webapitester.api.assertion.AssertionDtoFactory;
+import me.nehlsen.webapitester.fixture.TaskEntityFixture;
 import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
 import me.nehlsen.webapitester.persistence.task.TaskEntity;
 import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
@@ -30,11 +31,7 @@ class TaskDtoFactoryTest {
 
     @Test
     public void create_from_void_task_entity() {
-        VoidTaskEntity voidTaskEntity = new VoidTaskEntity();
-        voidTaskEntity.setUuid(UUID.fromString("af70b1d3-ad41-4d9f-b44a-f3cc7524d142"));
-        voidTaskEntity.setName("some void task");
-        voidTaskEntity.setUri(URI.create("scheme://host/path"));
-        voidTaskEntity.setAssertions(List.of());
+        VoidTaskEntity voidTaskEntity = TaskEntityFixture.voidTaskEntityWithoutAssertions();
 
         final TaskDto taskDto = taskDtoFactory.fromEntity(voidTaskEntity);
         assertThat(taskDto.getUuid()).isEqualTo(voidTaskEntity.getUuid().toString());
@@ -45,11 +42,7 @@ class TaskDtoFactoryTest {
 
     @Test
     public void create_from_http_get_task_entity() {
-        HttpGetTaskEntity httpGetTaskEntity = new HttpGetTaskEntity();
-        httpGetTaskEntity.setUuid(UUID.fromString("af70b1d3-ad41-4d9f-b44a-f3cc7524d142"));
-        httpGetTaskEntity.setName("some http get task");
-        httpGetTaskEntity.setUri(URI.create("scheme://host/path"));
-        httpGetTaskEntity.setAssertions(List.of());
+        final HttpGetTaskEntity httpGetTaskEntity = TaskEntityFixture.httpGetTaskEntityWithoutAssertions();
 
         final TaskDto taskDto = taskDtoFactory.fromEntity(httpGetTaskEntity);
         assertThat(taskDto.getUuid()).isEqualTo(httpGetTaskEntity.getUuid().toString());

@@ -1,12 +1,13 @@
 package me.nehlsen.webapitester.run;
 
-import me.nehlsen.webapitester.persistence.plan.PlanEntity;
-import me.nehlsen.webapitester.run.factory.TaskRunnerFactory;
+import lombok.extern.log4j.Log4j2;
 import me.nehlsen.webapitester.run.context.PlanExecutionContext;
 import me.nehlsen.webapitester.run.context.PlanExecutionContextFactory;
+import me.nehlsen.webapitester.run.dto.PlanDto;
+import me.nehlsen.webapitester.run.factory.TaskRunnerFactory;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component @Log4j2
 public class PlanRunner {
     private final PlanExecutionContextFactory planExecutionContextFactory;
     private final TaskRunnerFactory taskRunnerFactory;
@@ -16,7 +17,9 @@ public class PlanRunner {
         this.taskRunnerFactory = taskRunnerFactory;
     }
 
-    public void execute(PlanEntity plan) {
+    public void execute(PlanDto plan) {
+        log.info("execute \"{}\"", plan.getName());
+
         final PlanExecutionContext context = planExecutionContextFactory.createContext(plan);
 
         TaskRunner taskRunner = taskRunnerFactory.create(context);

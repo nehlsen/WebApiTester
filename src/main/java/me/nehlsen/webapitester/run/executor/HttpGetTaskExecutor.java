@@ -1,10 +1,11 @@
 package me.nehlsen.webapitester.run.executor;
 
 import lombok.extern.log4j.Log4j2;
-import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
-import me.nehlsen.webapitester.persistence.task.TaskEntity;
 import me.nehlsen.webapitester.run.context.TaskExecutionContext;
+import me.nehlsen.webapitester.run.dto.HttpGetTaskDto;
+import me.nehlsen.webapitester.run.dto.TaskDto;
 import me.nehlsen.webapitester.util.FunctionCallStopwatch;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
@@ -13,23 +14,23 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
-@Log4j2
+@Component @Log4j2
 public class HttpGetTaskExecutor implements TaskExecutor {
 
     private final int DEFAULT_REQUEST_TIMEOUT_SECONDS = 10;
 
     @Override
-    public boolean supports(TaskEntity task) {
-        return task instanceof HttpGetTaskEntity;
+    public boolean supports(TaskDto task) {
+        return task instanceof HttpGetTaskDto;
     }
 
     @Override
     public void execute(TaskExecutionContext context) {
-        context.setRequest(createRequest((HttpGetTaskEntity) context.getTask()));
+        context.setRequest(createRequest((HttpGetTaskDto) context.getTask()));
         context.setResponse(runRequest(context));
     }
 
-    private HttpRequest createRequest(HttpGetTaskEntity httpGetTask) {
+    private HttpRequest createRequest(HttpGetTaskDto httpGetTask) {
         return createRequestBuilder()
                 .uri(httpGetTask.getUri())
                 .timeout(Duration.of(DEFAULT_REQUEST_TIMEOUT_SECONDS, ChronoUnit.SECONDS))
