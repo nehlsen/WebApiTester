@@ -1,4 +1,4 @@
-package me.nehlsen.webapitester.persistence.task.assertion;
+package me.nehlsen.webapitester.persistence.assertion;
 
 import me.nehlsen.webapitester.api.assertion.CreateAssertionDto;
 import org.springframework.stereotype.Component;

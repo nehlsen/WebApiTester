@@ -4,9 +4,9 @@ import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
 import me.nehlsen.webapitester.persistence.task.TaskEntity;
 import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
-import me.nehlsen.webapitester.persistence.task.assertion.AssertionEntity;
-import me.nehlsen.webapitester.persistence.task.assertion.RequestTimeAssertionEntity;
-import me.nehlsen.webapitester.persistence.task.assertion.ResponseStatusCodeAssertionEntity;
+import me.nehlsen.webapitester.persistence.assertion.AssertionEntity;
+import me.nehlsen.webapitester.persistence.assertion.RequestTimeAssertionEntity;
+import me.nehlsen.webapitester.persistence.assertion.ResponseStatusCodeAssertionEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants.ComponentModel;
 

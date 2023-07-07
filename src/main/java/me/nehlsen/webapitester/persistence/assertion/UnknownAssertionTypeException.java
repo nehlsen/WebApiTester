@@ -1,4 +1,4 @@
-package me.nehlsen.webapitester.persistence.task.assertion;
+package me.nehlsen.webapitester.persistence.assertion;
 
 public class UnknownAssertionTypeException extends RuntimeException {
     public UnknownAssertionTypeException(String message) {

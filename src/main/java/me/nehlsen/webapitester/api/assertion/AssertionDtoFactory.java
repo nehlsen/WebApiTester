@@ -1,10 +1,10 @@
 package me.nehlsen.webapitester.api.assertion;
 
-import me.nehlsen.webapitester.persistence.task.assertion.AssertionEntity;
-import me.nehlsen.webapitester.persistence.task.assertion.AssertionEntityFactory;
-import me.nehlsen.webapitester.persistence.task.assertion.RequestTimeAssertionEntity;
-import me.nehlsen.webapitester.persistence.task.assertion.ResponseStatusCodeAssertionEntity;
-import me.nehlsen.webapitester.persistence.task.assertion.UnknownAssertionTypeException;
+import me.nehlsen.webapitester.persistence.assertion.AssertionEntity;
+import me.nehlsen.webapitester.persistence.assertion.AssertionEntityFactory;
+import me.nehlsen.webapitester.persistence.assertion.RequestTimeAssertionEntity;
+import me.nehlsen.webapitester.persistence.assertion.ResponseStatusCodeAssertionEntity;
+import me.nehlsen.webapitester.persistence.assertion.UnknownAssertionTypeException;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;

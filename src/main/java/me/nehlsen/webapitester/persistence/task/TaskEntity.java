@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import me.nehlsen.webapitester.persistence.task.assertion.AssertionEntity;
+import me.nehlsen.webapitester.persistence.assertion.AssertionEntity;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.CreationTimestamp;

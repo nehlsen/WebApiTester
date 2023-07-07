@@ -1,7 +1,7 @@
 package me.nehlsen.webapitester.persistence.task;
 
 import me.nehlsen.webapitester.api.task.CreateTaskDto;
-import me.nehlsen.webapitester.persistence.task.assertion.AssertionEntityFactory;
+import me.nehlsen.webapitester.persistence.assertion.AssertionEntityFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

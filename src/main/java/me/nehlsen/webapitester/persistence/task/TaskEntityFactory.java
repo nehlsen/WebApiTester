@@ -1,7 +1,7 @@
 package me.nehlsen.webapitester.persistence.task;
 
 import me.nehlsen.webapitester.api.task.CreateTaskDto;
-import me.nehlsen.webapitester.persistence.task.assertion.AssertionEntityFactory;
+import me.nehlsen.webapitester.persistence.assertion.AssertionEntityFactory;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
