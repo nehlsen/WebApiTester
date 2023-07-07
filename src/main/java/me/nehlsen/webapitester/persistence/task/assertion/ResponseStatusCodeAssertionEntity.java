@@ -14,5 +14,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseStatusCodeAssertionEntity extends AssertionEntity {
+
     int expectedStatusCode;
 }

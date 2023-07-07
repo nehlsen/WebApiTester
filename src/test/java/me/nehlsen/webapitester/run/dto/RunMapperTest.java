@@ -5,9 +5,13 @@ import me.nehlsen.webapitester.fixture.TaskEntityFixture;
 import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
 import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
+import me.nehlsen.webapitester.persistence.task.assertion.RequestTimeAssertionEntity;
+import me.nehlsen.webapitester.persistence.task.assertion.ResponseStatusCodeAssertionEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -52,8 +56,7 @@ class RunMapperTest {
         final VoidTaskDto voidTaskDto = mapper.voidTaskEntityToDto(voidTaskEntity);
         assertThat(voidTaskDto.getUuid()).isEqualTo(voidTaskEntity.getUuid());
         assertThat(voidTaskDto.getName()).isEqualTo(voidTaskEntity.getName());
-
-        // TODO check assertions
+        assertThat(voidTaskDto.getAssertions()).hasSize(voidTaskEntity.getAssertions().size());
     }
 
     @Test
@@ -67,7 +70,32 @@ class RunMapperTest {
         assertThat(httpGetTaskDto.getUuid()).isEqualTo(httpGetTaskEntity.getUuid());
         assertThat(httpGetTaskDto.getName()).isEqualTo(httpGetTaskEntity.getName());
         assertThat(httpGetTaskDto.getUri()).isEqualTo(httpGetTaskEntity.getUri());
+        assertThat(httpGetTaskDto.getAssertions()).hasSize(httpGetTaskEntity.getAssertions().size());
+    }
 
-        // TODO check assertions
+    @Test
+    public void map_request_time_assertion_entity_to_dto() {
+        final RequestTimeAssertionEntity requestTimeAssertionEntity = new RequestTimeAssertionEntity(444);
+        requestTimeAssertionEntity.setUuid(UUID.fromString("af70b1d3-ad41-4d9f-b44a-f3cc7524d142"));
+
+        final AssertionDto assertionDto = mapper.assertionEntityToDto(requestTimeAssertionEntity);
+        assertThat(assertionDto).isInstanceOf(RequestTimeAssertionDto.class);
+
+        final RequestTimeAssertionDto requestTimeAssertionDto = mapper.requestTimeAssertionEntityToDto(requestTimeAssertionEntity);
+        assertThat(requestTimeAssertionDto.getUuid()).isEqualTo(requestTimeAssertionEntity.getUuid());
+        assertThat(requestTimeAssertionDto.getMaximumRequestTimeMillis()).isEqualTo(requestTimeAssertionEntity.getMaximumRequestTimeMillis());
+    }
+
+    @Test
+    public void map_response_status_code_assertion_entity_to_dto() {
+        final ResponseStatusCodeAssertionEntity responseStatusCodeAssertionEntity = new ResponseStatusCodeAssertionEntity(666);
+        responseStatusCodeAssertionEntity.setUuid(UUID.fromString("af70b1d3-ad41-4d9f-b44a-f3cc7524d142"));
+
+        final AssertionDto assertionDto = mapper.assertionEntityToDto(responseStatusCodeAssertionEntity);
+        assertThat(assertionDto).isInstanceOf(ResponseStatusCodeAssertionDto.class);
+
+        final ResponseStatusCodeAssertionDto responseStatusCodeAssertionDto = mapper.responseStatusCodeAssertionEntityToDto(responseStatusCodeAssertionEntity);
+        assertThat(responseStatusCodeAssertionDto.getUuid()).isEqualTo(responseStatusCodeAssertionEntity.getUuid());
+        assertThat(responseStatusCodeAssertionDto.getExpectedStatusCode()).isEqualTo(responseStatusCodeAssertionEntity.getExpectedStatusCode());
     }
 }

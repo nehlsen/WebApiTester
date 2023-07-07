@@ -1,6 +1,8 @@
-package me.nehlsen.webapitester.task.assertion;
+package me.nehlsen.webapitester.run.assertion;
 
-import me.nehlsen.webapitester.task.TaskExecutionContext;
+import me.nehlsen.webapitester.run.context.TaskExecutionContext;
+import me.nehlsen.webapitester.run.dto.AssertionDto;
+import me.nehlsen.webapitester.run.dto.ResponseStatusCodeAssertionDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -20,19 +22,19 @@ class ResponseStatusCodeCheckerTest {
 
     @Test
     public void it_supports_instances_of_ResponseStatusCode() {
-        ResponseStatusCode taskAssertion = new ResponseStatusCode(0);
+        ResponseStatusCodeAssertionDto taskAssertion = new ResponseStatusCodeAssertionDto();
         assertThat(responseStatusCodeChecker.supports(taskAssertion)).isTrue();
     }
 
     @Test
     public void it_does_not_support_instances_not_of_ResponseStatusCode() {
-        TaskAssertion taskAssertion = Mockito.mock(TaskAssertion.class);
+        AssertionDto taskAssertion = Mockito.mock(AssertionDto.class);
         assertThat(responseStatusCodeChecker.supports(taskAssertion)).isFalse();
     }
 
     @Test
     public void it_does_not_support_null_as_ResponseStatusCode() {
-        TaskAssertion taskAssertion = null;
+        AssertionDto taskAssertion = null;
         assertThat(responseStatusCodeChecker.supports(taskAssertion)).isFalse();
     }
 
@@ -47,7 +49,8 @@ class ResponseStatusCodeCheckerTest {
         TaskExecutionContext context = Mockito.mock(TaskExecutionContext.class);
         Mockito.when(context.getResponse()).thenReturn(httpResponse);
 
-        ResponseStatusCode taskAssertion = new ResponseStatusCode(expectedStatusCode);
+        ResponseStatusCodeAssertionDto taskAssertion = new ResponseStatusCodeAssertionDto();
+        taskAssertion.setExpectedStatusCode(expectedStatusCode);
         assertThat(responseStatusCodeChecker.check(taskAssertion, context).isPositive()).isTrue();
     }
 
@@ -63,7 +66,8 @@ class ResponseStatusCodeCheckerTest {
         TaskExecutionContext context = Mockito.mock(TaskExecutionContext.class);
         Mockito.when(context.getResponse()).thenReturn(httpResponse);
 
-        ResponseStatusCode taskAssertion = new ResponseStatusCode(expectedStatusCode);
+        ResponseStatusCodeAssertionDto taskAssertion = new ResponseStatusCodeAssertionDto();
+        taskAssertion.setExpectedStatusCode(expectedStatusCode);
         assertThat(responseStatusCodeChecker.check(taskAssertion, context).isPositive()).isFalse();
     }
 }

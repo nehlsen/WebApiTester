@@ -8,6 +8,4 @@ import java.net.URI;
 public class HttpGetTaskDto extends TaskDto {
 
     URI uri;
-
-    // TODO assertions
 }
