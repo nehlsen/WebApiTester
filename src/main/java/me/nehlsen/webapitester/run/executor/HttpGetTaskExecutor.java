@@ -48,7 +48,7 @@ public class HttpGetTaskExecutor implements TaskExecutor {
 
         FunctionCallStopwatch<HttpResponse<String>> stopWatch = new FunctionCallStopwatch<>();
         HttpResponse<String> response = stopWatch.run(() -> executeHttpRequest(context.getRequest()));
-//        context.setRequestTimeMillis(stopWatch.getTimeMillis()); // FIXME
+        context.setRequestTimeMillis(stopWatch.getTimeMillis());
 
         return response;
     }

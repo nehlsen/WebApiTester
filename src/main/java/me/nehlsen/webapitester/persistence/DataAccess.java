@@ -5,6 +5,7 @@ import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import me.nehlsen.webapitester.persistence.plan.PlanEntityFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,6 +21,10 @@ public class DataAccess {
     ) {
         this.planEntityFactory = planEntityFactory;
         this.repository = repository;
+    }
+
+    public List<PlanEntity> findAll() {
+        return repository.findAll();
     }
 
     public PlanEntity findByUuid(String uuid) {

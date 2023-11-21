@@ -1,5 +1,6 @@
 package me.nehlsen.webapitester.api;
 
+import jakarta.validation.Valid;
 import me.nehlsen.webapitester.api.plan.CreatePlanDto;
 import me.nehlsen.webapitester.api.plan.PlanDto;
 import me.nehlsen.webapitester.api.plan.PlanDtoFactory;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+
+import java.net.URI;
 
 @Controller
 @RequestMapping(path = "plan")
@@ -33,13 +37,15 @@ public class PlanController {
     }
 
     @PostMapping(path = "/")
-    public ResponseEntity<PlanDto> createPlan(@RequestBody CreatePlanDto planDto) {
+    public ResponseEntity<PlanDto> createPlan(@Valid @RequestBody CreatePlanDto planDto) {
         final PlanEntity savedPlan = dataAccess.saveNew(planDto);
 
-        return ResponseEntity.ok(planDtoFactory.fromEntity(savedPlan));
+        final String createdPlanUri = MvcUriComponentsBuilder.fromMappingName("get_plan").arg(0, savedPlan.getUuid().toString()).build();
+
+        return ResponseEntity.created(URI.create(createdPlanUri)).build();
     }
 
-    @GetMapping(path = "/{uuid}")
+    @GetMapping(name = "get_plan", path = "/{uuid}")
     public ResponseEntity<PlanDto> getPlan(@PathVariable String uuid) {
         final PlanEntity planEntity = dataAccess.findByUuid(uuid);
 
