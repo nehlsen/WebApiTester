@@ -1,12 +1,14 @@
 package me.nehlsen.webapitester.persistence;
 
 import me.nehlsen.webapitester.api.plan.CreatePlanDto;
+import me.nehlsen.webapitester.persistence.event.AfterCreatePlanEvent;
+import me.nehlsen.webapitester.persistence.event.BeforeCreatePlanEvent;
 import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import me.nehlsen.webapitester.persistence.plan.PlanEntityFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -14,13 +16,16 @@ public class DataAccess {
 
     private final PlanEntityFactory planEntityFactory;
     private final PlanRepository repository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public DataAccess(
             PlanEntityFactory planEntityFactory,
-            PlanRepository repository
+            PlanRepository repository,
+            ApplicationEventPublisher applicationEventPublisher
     ) {
         this.planEntityFactory = planEntityFactory;
         this.repository = repository;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public List<PlanEntity> findAll() {
@@ -28,12 +33,16 @@ public class DataAccess {
     }
 
     public PlanEntity findByUuid(String uuid) {
-        final Optional<PlanEntity> optionalPlan = repository.findById(UUID.fromString(uuid));
-        return optionalPlan.orElseThrow(() -> new PlanNotFoundException("asd"));
+        return repository
+                .findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new PlanNotFoundException("asd"));
     }
 
     public PlanEntity saveNew(CreatePlanDto planDto) {
+        applicationEventPublisher.publishEvent(new BeforeCreatePlanEvent(this, planDto));
         final PlanEntity planEntity = planEntityFactory.newPlan(planDto);
-        return repository.save(planEntity);
+        final PlanEntity savedEntity = repository.save(planEntity);
+        applicationEventPublisher.publishEvent(new AfterCreatePlanEvent(this, savedEntity));
+        return savedEntity;
     }
 }
