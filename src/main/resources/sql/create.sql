@@ -1,4 +1,4 @@
-create table plan (created timestamp(6), updated timestamp(6), uuid uuid not null, name varchar(255), primary key (uuid));
+create table plan (schedule_active boolean not null, created timestamp(6), updated timestamp(6), uuid uuid not null, name varchar(255), schedule varchar(255), primary key (uuid));
 create table plan_tasks (plan_entity_uuid uuid not null, tasks_uuid uuid not null unique);
 create table t_assertion (expected_status_code integer, created timestamp(6), maximum_request_time_millis bigint, updated timestamp(6), uuid uuid not null, dtype varchar(31) not null, primary key (uuid));
 create table task (created timestamp(6), updated timestamp(6), uuid uuid not null, dtype varchar(31) not null, name varchar(255), uri bytea, primary key (uuid));
