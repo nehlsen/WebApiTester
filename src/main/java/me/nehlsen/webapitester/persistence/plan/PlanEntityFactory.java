@@ -22,6 +22,8 @@ public class PlanEntityFactory {
 
         planEntity.setName(dto.getName());
         planEntity.setTasks(dto.getTasks().stream().map(taskEntityFactory::newTask).toList());
+        planEntity.setSchedule(dto.getSchedule());
+        planEntity.setScheduleActive(dto.isScheduleActive());
 
         return planEntity;
     }

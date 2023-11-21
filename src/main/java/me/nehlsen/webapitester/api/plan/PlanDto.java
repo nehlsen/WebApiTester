@@ -10,4 +10,6 @@ public class PlanDto {
     String uuid;
     String name;
     List<TaskDto> tasks;
+    String schedule;
+    boolean scheduleActive;
 }

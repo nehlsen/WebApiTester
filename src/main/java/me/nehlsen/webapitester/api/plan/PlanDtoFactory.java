@@ -21,7 +21,9 @@ public class PlanDtoFactory {
         return new PlanDto(
                 plan.getUuid().toString(),
                 plan.getName(),
-                plan.getTasks().stream().map(taskDtoFactory::fromEntity).toList()
+                plan.getTasks().stream().map(taskDtoFactory::fromEntity).toList(),
+                plan.getSchedule(),
+                plan.isScheduleActive()
         );
     }
 }

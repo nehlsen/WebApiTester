@@ -35,6 +35,9 @@ public class PlanEntity {
     @Cascade(CascadeType.ALL)
     List<TaskEntity> tasks;
 
+    String schedule = "";
+    boolean scheduleActive = false;
+
     @CreationTimestamp
     Date created;
 

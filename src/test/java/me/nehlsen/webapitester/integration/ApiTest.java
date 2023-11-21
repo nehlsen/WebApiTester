@@ -128,6 +128,27 @@ public class ApiTest {
     }
 
     @Test
+    void create_plan_with_schedule() {
+        final CreatePlanDto planDto = new CreatePlanDto("some plan with schedule", List.of(), "@hourly", true);
+
+        final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plan/", planDto, PlanDto.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getHeaders().getLocation()).isNotNull();
+        final String uuid = extractUuidFromLocation(response.getHeaders().getLocation());
+
+        final ResponseEntity<PlanDto> planResponse = testRestTemplate.getForEntity(response.getHeaders().getLocation(), PlanDto.class);
+        assertThat(planResponse.getStatusCode().is2xxSuccessful()).isTrue();
+
+        final PlanDto returnedPlanDto = planResponse.getBody();
+        assertThat(returnedPlanDto).isNotNull();
+        assertThat(returnedPlanDto.getUuid()).isEqualTo(uuid);
+        assertThat(returnedPlanDto.getName()).isEqualTo(planDto.getName());
+        assertThat(returnedPlanDto.getTasks()).isNotNull().isEmpty();
+        assertThat(returnedPlanDto.getSchedule()).isEqualTo(planDto.getSchedule());
+        assertThat(returnedPlanDto.isScheduleActive()).isEqualTo(planDto.isScheduleActive());
+    }
+
+    @Test
     public void get_plan() {
         final PlanEntity simplePlan = dataAccess.saveNew(new CreatePlanDto("the simplest plan possible", List.of()));
         final String simplePlanUuid = simplePlan.getUuid().toString();
