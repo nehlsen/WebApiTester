@@ -5,6 +5,7 @@ import me.nehlsen.webapitester.persistence.event.AfterCreatePlanEvent;
 import me.nehlsen.webapitester.persistence.event.BeforeCreatePlanEvent;
 import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import me.nehlsen.webapitester.persistence.plan.PlanEntityFactory;
+import me.nehlsen.webapitester.persistence.plan.PlanListView;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,9 @@ public class DataAccess {
 
     public List<PlanEntity> findAll() {
         return repository.findAll();
+    }
+    public List<PlanListView> findAllListView() {
+        return repository.findAllListViewBy();
     }
 
     public PlanEntity findByUuid(String uuid) {
