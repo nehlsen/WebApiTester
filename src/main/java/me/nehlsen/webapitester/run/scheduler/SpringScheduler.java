@@ -9,6 +9,10 @@ import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ScheduledFuture;
 
 @Component
 @Log4j2
@@ -17,6 +21,7 @@ public class SpringScheduler implements RunScheduler {
     private final TaskScheduler taskScheduler;
     private final SpringSchedulerTaskFactory taskFactory;
     private final RunMapper runMapper;
+    private final Map<UUID, ScheduledFuture<?>> planSchedules = new HashMap<>();
 
     public SpringScheduler(TaskScheduler taskScheduler, SpringSchedulerTaskFactory taskFactory, RunMapper runMapper) {
         this.taskScheduler = taskScheduler;
@@ -30,6 +35,7 @@ public class SpringScheduler implements RunScheduler {
 
         final PlanDto planDto = runMapper.planEntityToDto(plan);
 
+        // FIXME create a map UUID:ScheduledFuture -> remember what schedules we have, delete if necessary
         taskScheduler.schedule(
                 taskFactory.create(planDto),
                 Instant.now()
@@ -39,6 +45,11 @@ public class SpringScheduler implements RunScheduler {
     @Override
     public void schedule(PlanEntity plan) {
         if (!plan.isScheduleActive() || plan.getSchedule().isEmpty()) {
+            log.warn("NOT Scheduling Plan \"{}\", no Schedule or Schedule not active", plan.getName());
+            return;
+        }
+        if (isPlanScheduleActive(plan)) {
+            log.warn("NOT Scheduling Plan \"{}\", already Scheduled", plan.getName());
             return;
         }
 
@@ -56,9 +67,14 @@ public class SpringScheduler implements RunScheduler {
 
         final PlanDto planDto = runMapper.planEntityToDto(plan);
 
-        taskScheduler.schedule(
-                taskFactory.create(planDto),
-                trigger
+        planSchedules.put(
+                plan.getUuid(),
+                taskScheduler.schedule(taskFactory.create(planDto), trigger)
         );
+    }
+
+    @Override
+    public boolean isPlanScheduleActive(PlanEntity plan) {
+        return planSchedules.containsKey(plan.getUuid());
     }
 }

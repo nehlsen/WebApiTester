@@ -31,7 +31,7 @@ public class TaskRunner {
     }
 
     public void execute(TaskDto task) {
-        log.info("execute: \"{}\"", task.getName());
+        log.info("Executing Task \"{}\"", task.getName());
 
         final TaskExecutionContext taskExecutionContext = taskExecutionContextFactory.createContext(task, planExecutionContext);
 

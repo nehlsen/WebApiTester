@@ -18,7 +18,7 @@ public class PlanRunner {
     }
 
     public void execute(PlanDto plan) {
-        log.info("execute \"{}\"", plan.getName());
+        log.info("Executing Plan \"{}\"", plan.getName());
 
         final PlanExecutionContext context = planExecutionContextFactory.createContext(plan);
 
