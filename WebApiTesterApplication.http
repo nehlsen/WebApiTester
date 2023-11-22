@@ -1,0 +1,112 @@
+#@name create plan without tasks
+#@no-log
+POST {{host}}/plans/
+Content-Type: application/json
+
+{
+  "name": "my first plan having no tasks",
+  "tasks": []
+}
+
+###
+
+#@name create plan with "null" tasks
+#@no-log
+POST {{host}}/plans/
+Content-Type: application/json
+
+{
+  "name": "my first plan having no tasks",
+  "tasks": null
+}
+
+###
+
+#@name create plan with tasks but no assertions
+#@no-log
+POST {{host}}/plans/
+Content-Type: application/json
+
+{
+  "name": "my first plan",
+  "tasks": [
+    {
+      "type": "http_get",
+      "name": "simple task",
+      "uri": "https://badssl.com/",
+      "assertions": []
+    }
+  ]
+}
+
+###
+
+#@name create plan with tasks and assertion
+#@no-log
+POST {{host}}/plans/
+Content-Type: application/json
+
+{
+  "name": "HTTP GET and expect HTTP-OK",
+  "tasks": [
+    {
+      "type": "http_get",
+      "name": "HTTP GET badssl.com",
+      "uri": "https://badssl.com/",
+      "assertions": [
+        {
+          "type": "response_status_code",
+          "parameters": {
+            "expectedStatusCode": 200
+          }
+        }
+      ]
+    }
+  ]
+}
+
+###
+
+#@name create plan with tasks and assertion and a schedule to run every 10 seconds
+#@no-log
+POST {{host}}/plans/
+Content-Type: application/json
+
+{
+  "name": "HTTP GET and expect HTTP-OK (every 10 seconds)",
+  "tasks": [
+    {
+      "type": "http_get",
+      "name": "HTTP GET badssl.com",
+      "uri": "https://badssl.com/",
+      "assertions": [
+        {
+          "type": "response_status_code",
+          "parameters": {
+            "expectedStatusCode": 200
+          }
+        }
+      ]
+    }
+  ],
+  "schedule": "*/10 * * * * *",
+  "scheduleActive": true
+}
+
+###
+
+#@name get all plans
+#@no-log
+GET {{host}}/plans/
+
+###
+
+#@name get one plan
+#@no-log
+GET {{host}}/plans/cf2571db-7da3-4f9c-9fe8-d800b96b9fe5
+
+###
+
+#@name RUN one plan
+#@no-log
+POST {{host}}/plans/cf2571db-7da3-4f9c-9fe8-d800b96b9fe5/run

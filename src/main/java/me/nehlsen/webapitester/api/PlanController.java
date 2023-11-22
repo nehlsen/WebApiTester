@@ -22,7 +22,7 @@ import java.net.URI;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "plan")
+@RequestMapping(path = "plans")
 public class PlanController {
 
     private final DataAccess dataAccess;

@@ -39,7 +39,7 @@ public class ApiTest {
     @Test
     void create_plan_with_name_and_empty_list_of_tasks_is_saved_in_repository() {
         final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity(
-                "/plan/",
+                "/plans/",
                 new CreatePlanDto("a new test plan", List.of()),
                 PlanDto.class
         );
@@ -59,7 +59,7 @@ public class ApiTest {
         final HttpEntity<CreatePlanDto> requestBody = new HttpEntity<>(new CreatePlanDto("a new test plan", null));
         final ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {};
         final ResponseEntity<Map<String, Object>> response = testRestTemplate.exchange(
-                "/plan/",
+                "/plans/",
                 HttpMethod.POST,
                 requestBody,
                 responseType
@@ -74,7 +74,7 @@ public class ApiTest {
         final CreateTaskDto taskDto = new CreateTaskDto("void", "empty task", "needs://a-valid.url", List.of());
         final CreatePlanDto planDto = new CreatePlanDto("some plan with task", List.of(taskDto));
 
-        final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plan/", planDto, PlanDto.class);
+        final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plans/", planDto, PlanDto.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getHeaders().getLocation()).isNotNull();
         final String uuid = extractUuidFromLocation(response.getHeaders().getLocation());
@@ -101,7 +101,7 @@ public class ApiTest {
         final CreateTaskDto taskDto = new CreateTaskDto("http_get", "request BadSSL", "https://badssl.com", List.of(assertionDto));
         final CreatePlanDto planDto = new CreatePlanDto("some plan with task and assertion", List.of(taskDto));
 
-        final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plan/", planDto, PlanDto.class);
+        final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plans/", planDto, PlanDto.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getHeaders().getLocation()).isNotNull();
         final String uuid = extractUuidFromLocation(response.getHeaders().getLocation());
@@ -131,7 +131,7 @@ public class ApiTest {
     void create_plan_with_schedule() {
         final CreatePlanDto planDto = new CreatePlanDto("some plan with schedule", List.of(), "@hourly", true);
 
-        final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plan/", planDto, PlanDto.class);
+        final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plans/", planDto, PlanDto.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getHeaders().getLocation()).isNotNull();
         final String uuid = extractUuidFromLocation(response.getHeaders().getLocation());
@@ -153,7 +153,7 @@ public class ApiTest {
         final PlanEntity simplePlan = dataAccess.saveNew(new CreatePlanDto("the simplest plan possible", List.of()));
         final String simplePlanUuid = simplePlan.getUuid().toString();
 
-        final ResponseEntity<PlanDto> planResponse = testRestTemplate.getForEntity("/plan/%s".formatted(simplePlanUuid), PlanDto.class);
+        final ResponseEntity<PlanDto> planResponse = testRestTemplate.getForEntity("/plans/%s".formatted(simplePlanUuid), PlanDto.class);
         assertThat(planResponse.getStatusCode().is2xxSuccessful()).isTrue();
 
         final PlanDto plan = planResponse.getBody();
@@ -168,7 +168,7 @@ public class ApiTest {
         final PlanEntity simplePlan = dataAccess.saveNew(new CreatePlanDto("the simplest plan possible", List.of()));
         final String simplePlanUuid = simplePlan.getUuid().toString();
 
-        final ResponseEntity<ScheduleResponse> response = testRestTemplate.postForEntity("/plan/%s/run".formatted(simplePlanUuid), null, ScheduleResponse.class);
+        final ResponseEntity<ScheduleResponse> response = testRestTemplate.postForEntity("/plans/%s/run".formatted(simplePlanUuid), null, ScheduleResponse.class);
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
 
         final ScheduleResponse scheduleResponse = response.getBody();
