@@ -1,0 +1,8 @@
+package me.nehlsen.webapitester.persistence.plan;
+
+import org.springframework.data.repository.ListCrudRepository;
+
+import java.util.UUID;
+
+public interface PlanExecutionRecordRepository extends ListCrudRepository<PlanExecutionRecordEntity, UUID> {
+}

@@ -30,6 +30,10 @@ public class TaskRunner {
         this.assertionsChecker = assertionsChecker;
     }
 
+    public void execute(List<TaskDto> tasks) {
+        tasks.forEach(this::execute);
+    }
+
     public void execute(TaskDto task) {
         log.info("Executing Task \"{}\"", task.getName());
 
