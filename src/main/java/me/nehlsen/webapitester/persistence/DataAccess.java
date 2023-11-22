@@ -5,6 +5,8 @@ import me.nehlsen.webapitester.persistence.event.AfterCreatePlanEvent;
 import me.nehlsen.webapitester.persistence.event.BeforeCreatePlanEvent;
 import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import me.nehlsen.webapitester.persistence.plan.PlanEntityFactory;
+import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntity;
+import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordRepository;
 import me.nehlsen.webapitester.persistence.plan.PlanListView;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -16,37 +18,45 @@ import java.util.UUID;
 public class DataAccess {
 
     private final PlanEntityFactory planEntityFactory;
-    private final PlanRepository repository;
+    private final PlanRepository planRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final PlanExecutionRecordRepository executionRecordRepository;
 
     public DataAccess(
             PlanEntityFactory planEntityFactory,
-            PlanRepository repository,
-            ApplicationEventPublisher applicationEventPublisher
-    ) {
+            PlanRepository planRepository,
+            ApplicationEventPublisher applicationEventPublisher,
+            PlanExecutionRecordRepository executionRecordRepository) {
         this.planEntityFactory = planEntityFactory;
-        this.repository = repository;
+        this.planRepository = planRepository;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.executionRecordRepository = executionRecordRepository;
     }
 
     public List<PlanEntity> findAll() {
-        return repository.findAll();
+        return planRepository.findAll();
     }
     public List<PlanListView> findAllListView() {
-        return repository.findAllListViewBy();
+        return planRepository.findAllListViewBy();
     }
 
     public PlanEntity findByUuid(String uuid) {
-        return repository
+        return planRepository
                 .findById(UUID.fromString(uuid))
-                .orElseThrow(() -> new PlanNotFoundException("asd"));
+                .orElseThrow(() -> PlanNotFoundException.byUuid(uuid));
     }
 
     public PlanEntity saveNew(CreatePlanDto planDto) {
         applicationEventPublisher.publishEvent(new BeforeCreatePlanEvent(this, planDto));
         final PlanEntity planEntity = planEntityFactory.newPlan(planDto);
-        final PlanEntity savedEntity = repository.save(planEntity);
+        final PlanEntity savedEntity = planRepository.save(planEntity);
         applicationEventPublisher.publishEvent(new AfterCreatePlanEvent(this, savedEntity));
         return savedEntity;
+    }
+
+    public PlanExecutionRecordEntity findLatestExecutionContext(String uuid) {
+        return executionRecordRepository
+                .findFirstByPlan_UuidOrderByCreatedDesc(UUID.fromString(uuid))
+                .orElseThrow();
     }
 }
