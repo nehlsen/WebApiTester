@@ -6,6 +6,7 @@ import me.nehlsen.webapitester.api.plan.PlanDto;
 import me.nehlsen.webapitester.api.plan.PlanDtoFactory;
 import me.nehlsen.webapitester.persistence.DataAccess;
 import me.nehlsen.webapitester.persistence.plan.PlanEntity;
+import me.nehlsen.webapitester.persistence.plan.PlanListView;
 import me.nehlsen.webapitester.run.scheduler.RunScheduler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "plan")
@@ -43,6 +46,12 @@ public class PlanController {
         final String createdPlanUri = MvcUriComponentsBuilder.fromMappingName("get_plan").arg(0, savedPlan.getUuid().toString()).build();
 
         return ResponseEntity.created(URI.create(createdPlanUri)).build();
+    }
+
+    @GetMapping(path = "/")
+    @ResponseBody
+    public List<PlanListView> all() {
+        return dataAccess.findAllListView();
     }
 
     @GetMapping(name = "get_plan", path = "/{uuid}")
