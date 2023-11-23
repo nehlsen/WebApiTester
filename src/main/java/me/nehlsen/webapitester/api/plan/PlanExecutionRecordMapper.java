@@ -9,5 +9,6 @@ import org.mapstruct.MappingConstants;
 public interface PlanExecutionRecordMapper {
 
     @Mapping(target = "runtimeMillis", expression = "java(executionRecordEntity.getEndTimeEpochMillis() - executionRecordEntity.getStartTimeEpochMillis())")
+    @Mapping(target = "timestamp", source = "updated")
     PlanExecutionRecordDto planExecutionRecordEntityToDto(PlanExecutionRecordEntity executionRecordEntity);
 }
