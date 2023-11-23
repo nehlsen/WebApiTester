@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "plans/{uuid}/execution-records")
-@CrossOrigin(origins = "${webapitester.cors.origins}")
+@CrossOrigin(origins = "${webapitester.cors.origins:localhost}")
 public class PlanExecutionRecordController {
 
     private final DataAccess dataAccess;

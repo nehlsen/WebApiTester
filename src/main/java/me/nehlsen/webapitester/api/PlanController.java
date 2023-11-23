@@ -24,7 +24,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(path = "plans")
-@CrossOrigin(origins = "${webapitester.cors.origins}")
+@CrossOrigin(origins = "${webapitester.cors.origins:localhost}")
 public class PlanController {
 
     private final DataAccess dataAccess;
