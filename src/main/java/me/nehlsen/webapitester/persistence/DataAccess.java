@@ -57,6 +57,6 @@ public class DataAccess {
     public PlanExecutionRecordEntity findLatestExecutionContext(String uuid) {
         return executionRecordRepository
                 .findFirstByPlan_UuidOrderByCreatedDesc(UUID.fromString(uuid))
-                .orElseThrow();
+                .orElseThrow(() -> new PlanExecutionRecordNotFoundException("No Plan Execution Record found"));
     }
 }
