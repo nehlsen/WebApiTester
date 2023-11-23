@@ -8,5 +8,6 @@ import java.util.Date;
 public class PlanExecutionRecordDto {
     String uuid;
     long runtimeMillis;
+    boolean resultPositive;
     Date timestamp;
 }

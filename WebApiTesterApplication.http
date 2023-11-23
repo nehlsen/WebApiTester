@@ -67,6 +67,32 @@ Content-Type: application/json
 
 ###
 
+#@name create plan with tasks and assertion - which always fails
+#@no-log
+POST {{host}}/plans/
+Content-Type: application/json
+
+{
+  "name": "HTTP GET, expect HTTP-OK, FAILS",
+  "tasks": [
+    {
+      "type": "http_get",
+      "name": "HTTP GET a 404 from httpbin",
+      "uri": "https://httpbin.org/status/404",
+      "assertions": [
+        {
+          "type": "response_status_code",
+          "parameters": {
+            "expectedStatusCode": 200
+          }
+        }
+      ]
+    }
+  ]
+}
+
+###
+
 #@name create plan with tasks and assertion and a schedule to run every 10 seconds
 #@no-log
 POST {{host}}/plans/

@@ -12,14 +12,22 @@ public class PlanExecutionContext {
 
     private final UUID uuid = UUID.randomUUID();
     private final PlanDto plan;
-    private List<TaskExecutionContext> taskExecutionContexts;
+    private final List<TaskExecutionContext> taskExecutionContexts = new LinkedList<>();
 
     public PlanExecutionContext(PlanDto plan) {
         this.plan = plan;
-        this.taskExecutionContexts = new LinkedList<>();
     }
 
     public void addTaskExecutionContext(TaskExecutionContext taskExecutionContext) {
         taskExecutionContexts.add(taskExecutionContext);
+    }
+
+    public boolean isResultPositive() {
+        return taskExecutionContexts
+                .stream()
+                .map(TaskExecutionContext::isResultPositive)
+                .filter(result -> !result)
+                .findFirst()
+                .orElse(true);
     }
 }

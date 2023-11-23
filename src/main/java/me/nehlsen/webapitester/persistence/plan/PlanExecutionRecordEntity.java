@@ -31,6 +31,7 @@ public class PlanExecutionRecordEntity {
 
     long startTimeEpochMillis;
     long endTimeEpochMillis;
+    private boolean resultPositive;
 
     @CreationTimestamp
     Date created;

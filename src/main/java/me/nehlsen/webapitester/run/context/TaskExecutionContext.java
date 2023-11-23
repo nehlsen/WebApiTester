@@ -8,6 +8,7 @@ import me.nehlsen.webapitester.run.dto.TaskDto;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +20,9 @@ public class TaskExecutionContext {
     private final TaskDto task;
     private HttpRequest request; // FIXME replace with a DTO
     private long requestTimeMillis; // FIXME merge with request DTO
-    HttpResponse<String> response; // FIXME replace with a DTO
+    private HttpResponse<String> response; // FIXME replace with a DTO
 
-    Map<AssertionDto, List<AssertionResult>> assertionResults = new HashMap<>();
+    private Map<AssertionDto, List<AssertionResult>> assertionResults = new HashMap<>();
 
     public TaskExecutionContext(TaskDto task, PlanExecutionContext planExecutionContext) {
         this.task = task;
@@ -30,5 +31,16 @@ public class TaskExecutionContext {
 
     public void addAssertionResults(AssertionDto assertion, List<AssertionResult> results) {
         assertionResults.put(assertion, results);
+    }
+
+    public boolean isResultPositive() {
+        return assertionResults
+                .values()
+                .stream()
+                .flatMap(Collection::stream)
+                .map(AssertionResult::isPositive)
+                .filter(positive -> !positive)
+                .findFirst()
+                .orElse(true);
     }
 }

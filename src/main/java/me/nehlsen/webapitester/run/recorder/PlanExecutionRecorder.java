@@ -58,6 +58,7 @@ public class PlanExecutionRecorder {
         recordRepository.findById(executionContextToRecord.get(planExecutionContext.getUuid()))
                 .ifPresent(record -> {
                     record.setEndTimeEpochMillis(Instant.now().toEpochMilli());
+                    record.setResultPositive(planExecutionContext.isResultPositive());
                     recordRepository.save(record);
                 });
 
