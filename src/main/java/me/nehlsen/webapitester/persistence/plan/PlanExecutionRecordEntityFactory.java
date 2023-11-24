@@ -1,6 +1,6 @@
 package me.nehlsen.webapitester.persistence.plan;
 
-import me.nehlsen.webapitester.persistence.PlanRepository;
+import me.nehlsen.webapitester.persistence.DataAccess;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -8,15 +8,15 @@ import java.util.UUID;
 @Component
 public class PlanExecutionRecordEntityFactory {
 
-    private final PlanRepository planRepository;
+    private final DataAccess dataAccess;
 
-    public PlanExecutionRecordEntityFactory(PlanRepository planRepository) {
-        this.planRepository = planRepository;
+    public PlanExecutionRecordEntityFactory(DataAccess dataAccess) {
+        this.dataAccess = dataAccess;
     }
 
     public PlanExecutionRecordEntity create(final UUID plan) {
         final PlanExecutionRecordEntity executionRecord = new PlanExecutionRecordEntity();
-        executionRecord.setPlan(planRepository.findById(plan).orElseThrow());
+        executionRecord.setPlan(dataAccess.findPlanByUuid(plan).orElseThrow());
         return executionRecord;
     }
 }

@@ -1,9 +1,9 @@
 package me.nehlsen.webapitester.run.recorder;
 
 import lombok.extern.slf4j.Slf4j;
+import me.nehlsen.webapitester.persistence.DataAccess;
 import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntity;
 import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntityFactory;
-import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordRepository;
 import me.nehlsen.webapitester.run.context.PlanExecutionContext;
 import org.springframework.stereotype.Component;
 
@@ -17,15 +17,14 @@ import java.util.UUID;
 public class PlanExecutionRecorder {
 
     private final PlanExecutionRecordEntityFactory planExecutionRecordEntityFactory;
-    private final PlanExecutionRecordRepository recordRepository;
+    private final DataAccess dataAccess;
     private final Map<UUID, UUID> executionContextToRecord = new HashMap<>();
 
     public PlanExecutionRecorder(
             PlanExecutionRecordEntityFactory planExecutionRecordEntityFactory,
-            PlanExecutionRecordRepository recordRepository
-    ) {
+            DataAccess dataAccess) {
         this.planExecutionRecordEntityFactory = planExecutionRecordEntityFactory;
-        this.recordRepository = recordRepository;
+        this.dataAccess = dataAccess;
     }
 
     public void executionStart(PlanExecutionContext planExecutionContext) {
@@ -41,7 +40,7 @@ public class PlanExecutionRecorder {
         final PlanExecutionRecordEntity executionRecord = planExecutionRecordEntityFactory.create(planExecutionContext.getPlan().getUuid());
         executionRecord.setStartTimeEpochMillis(Instant.now().toEpochMilli());
 
-        recordRepository.save(executionRecord);
+        dataAccess.save(executionRecord);
         executionContextToRecord.put(planExecutionContext.getUuid(), executionRecord.getUuid());
     }
 
@@ -55,11 +54,11 @@ public class PlanExecutionRecorder {
             return;
         }
 
-        recordRepository.findById(executionContextToRecord.get(planExecutionContext.getUuid()))
+        dataAccess.findExecutionRecordByUuid(executionContextToRecord.get(planExecutionContext.getUuid()))
                 .ifPresent(record -> {
                     record.setEndTimeEpochMillis(Instant.now().toEpochMilli());
                     record.setResultPositive(planExecutionContext.isResultPositive());
-                    recordRepository.save(record);
+                    dataAccess.save(record);
                 });
 
         executionContextToRecord.remove(planExecutionContext.getUuid());

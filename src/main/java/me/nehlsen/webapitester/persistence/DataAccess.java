@@ -6,12 +6,12 @@ import me.nehlsen.webapitester.persistence.event.BeforeCreatePlanEvent;
 import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import me.nehlsen.webapitester.persistence.plan.PlanEntityFactory;
 import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntity;
-import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordRepository;
 import me.nehlsen.webapitester.persistence.plan.PlanListView;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -33,6 +33,10 @@ public class DataAccess {
         this.executionRecordRepository = executionRecordRepository;
     }
 
+    public long countAll() {
+        return planRepository.count();
+    }
+
     public List<PlanEntity> findAll() {
         return planRepository.findAll();
     }
@@ -40,13 +44,11 @@ public class DataAccess {
         return planRepository.findAllListViewBy();
     }
 
-    public PlanEntity findByUuid(String uuid) {
-        return planRepository
-                .findById(UUID.fromString(uuid))
-                .orElseThrow(() -> PlanNotFoundException.byUuid(uuid));
+    public Optional<PlanEntity> findPlanByUuid(UUID uuid) {
+        return planRepository.findById(uuid);
     }
 
-    public PlanEntity saveNew(CreatePlanDto planDto) {
+    public PlanEntity save(CreatePlanDto planDto) {
         applicationEventPublisher.publishEvent(new BeforeCreatePlanEvent(this, planDto));
         final PlanEntity planEntity = planEntityFactory.newPlan(planDto);
         final PlanEntity savedEntity = planRepository.save(planEntity);
@@ -54,9 +56,17 @@ public class DataAccess {
         return savedEntity;
     }
 
-    public PlanExecutionRecordEntity findLatestExecutionContext(String uuid) {
+    public Optional<PlanExecutionRecordEntity> findExecutionRecordByUuid(UUID uuid) {
+        return executionRecordRepository.findById(uuid);
+    }
+
+    public PlanExecutionRecordEntity findLatestExecutionRecord(String uuid) {
         return executionRecordRepository
                 .findFirstByPlan_UuidOrderByCreatedDesc(UUID.fromString(uuid))
                 .orElseThrow(() -> new PlanExecutionRecordNotFoundException("No Plan Execution Record found"));
+    }
+
+    public PlanExecutionRecordEntity save(PlanExecutionRecordEntity executionRecord) {
+        return executionRecordRepository.save(executionRecord);
     }
 }

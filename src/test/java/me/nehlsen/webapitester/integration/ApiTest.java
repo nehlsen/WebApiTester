@@ -4,12 +4,13 @@ import me.nehlsen.webapitester.api.ScheduleResponse;
 import me.nehlsen.webapitester.api.assertion.AssertionDto;
 import me.nehlsen.webapitester.api.assertion.CreateAssertionDto;
 import me.nehlsen.webapitester.api.plan.CreatePlanDto;
+import me.nehlsen.webapitester.api.plan.PlanExecutionRecordDto;
 import me.nehlsen.webapitester.api.task.CreateTaskDto;
 import me.nehlsen.webapitester.api.plan.PlanDto;
 import me.nehlsen.webapitester.api.task.TaskDto;
 import me.nehlsen.webapitester.persistence.DataAccess;
 import me.nehlsen.webapitester.persistence.plan.PlanEntity;
-import me.nehlsen.webapitester.persistence.task.TaskEntity;
+import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,11 +22,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.entry;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ApiTest {
@@ -54,7 +56,7 @@ public class ApiTest {
 
     @Test
     void create_plan_with_tasks_list_is_null_results_is_bad_request_and_no_plan_is_saved_in_repository() {
-        final int sizeBefore = getRepositorySize();
+        final long sizeBefore = getRepositorySize();
 
         final HttpEntity<CreatePlanDto> requestBody = new HttpEntity<>(new CreatePlanDto("a new test plan", null));
         final ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {};
@@ -149,8 +151,22 @@ public class ApiTest {
     }
 
     @Test
-    public void get_plan() {
-        final PlanEntity simplePlan = dataAccess.saveNew(new CreatePlanDto("the simplest plan possible", List.of()));
+    public void get_all_plans() {
+        dataAccess.save(new CreatePlanDto("empty plan 1", List.of()));
+        dataAccess.save(new CreatePlanDto("empty plan 2", List.of()));
+        final long repositorySize = getRepositorySize();
+
+        final ParameterizedTypeReference<List<PlanEntity>> listViewResponse = new ParameterizedTypeReference<>() {};
+        final ResponseEntity<List<PlanEntity>> planListResponse = testRestTemplate.exchange("/plans/", HttpMethod.GET, null, listViewResponse);
+        assertThat(planListResponse.getStatusCode().is2xxSuccessful()).isTrue();
+
+        final List<PlanEntity> planList = planListResponse.getBody();
+        assertThat(planList).isNotNull().hasSize((int) repositorySize);
+    }
+
+    @Test
+    public void get_one_plan() {
+        final PlanEntity simplePlan = dataAccess.save(new CreatePlanDto("the simplest plan possible", List.of()));
         final String simplePlanUuid = simplePlan.getUuid().toString();
 
         final ResponseEntity<PlanDto> planResponse = testRestTemplate.getForEntity("/plans/%s".formatted(simplePlanUuid), PlanDto.class);
@@ -165,7 +181,7 @@ public class ApiTest {
 
     @Test
     public void run_plan() {
-        final PlanEntity simplePlan = dataAccess.saveNew(new CreatePlanDto("the simplest plan possible", List.of()));
+        final PlanEntity simplePlan = dataAccess.save(new CreatePlanDto("the simplest plan possible", List.of()));
         final String simplePlanUuid = simplePlan.getUuid().toString();
 
         final ResponseEntity<ScheduleResponse> response = testRestTemplate.postForEntity("/plans/%s/run".formatted(simplePlanUuid), null, ScheduleResponse.class);
@@ -177,12 +193,37 @@ public class ApiTest {
         assertThat(scheduleResponse.getMessage()).isEqualTo("Plan has been scheduled to run: now");
     }
 
-    private int getRepositorySize() {
-        return dataAccess.findAll().size();
+    @Test
+    public void it_returns_404_for_get_latest_execution_record_if_none_exist() {
+        final PlanEntity simplePlan = dataAccess.save(new CreatePlanDto("the simplest plan possible", List.of()));
+        final String simplePlanUuid = simplePlan.getUuid().toString();
+
+        final ResponseEntity<PlanExecutionRecordDto> response = testRestTemplate.getForEntity("/plans/%s/execution-records/latest".formatted(simplePlanUuid), PlanExecutionRecordDto.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void get_latest_execution_record() {
+        final PlanEntity simplePlan = dataAccess.save(new CreatePlanDto("the simplest plan possible", List.of()));
+        final PlanExecutionRecordEntity executionRecord = dataAccess.save(createExecutionRecordFor(simplePlan));
+        final String simplePlanUuid = simplePlan.getUuid().toString();
+
+        final ResponseEntity<PlanExecutionRecordDto> response = testRestTemplate.getForEntity("/plans/%s/execution-records/latest".formatted(simplePlanUuid), PlanExecutionRecordDto.class);
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+
+        final PlanExecutionRecordDto recordDto = response.getBody();
+        assertThat(recordDto).isNotNull();
+        assertThat(recordDto.getUuid()).isEqualTo(executionRecord.getUuid().toString());
+        assertThat(recordDto.getRuntimeMillis()).isEqualTo(123);
+        assertThat(recordDto.isResultPositive()).isTrue();
+    }
+
+    private long getRepositorySize() {
+        return dataAccess.countAll();
     }
 
     private PlanEntity getPlanFromRepository(String uuid) {
-        final PlanEntity plan = dataAccess.findByUuid(uuid);
+        final PlanEntity plan = dataAccess.findPlanByUuid(UUID.fromString(uuid)).orElseThrow();
         assertThat(plan).isNotNull();
 
         return plan;
@@ -191,5 +232,16 @@ public class ApiTest {
     private String extractUuidFromLocation(URI location) {
         final String[] split = location.toString().split("/");
         return split[split.length - 1];
+    }
+
+    private PlanExecutionRecordEntity createExecutionRecordFor(PlanEntity plan) {
+        final PlanExecutionRecordEntity executionRecord = new PlanExecutionRecordEntity();
+        executionRecord.setPlan(plan);
+        executionRecord.setStartTimeEpochMillis(123000);
+        executionRecord.setEndTimeEpochMillis(123123);
+        executionRecord.setResultPositive(true);
+        executionRecord.setUpdated(new Date());
+
+        return executionRecord;
     }
 }

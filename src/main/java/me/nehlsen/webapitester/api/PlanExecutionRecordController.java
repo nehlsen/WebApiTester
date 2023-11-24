@@ -25,7 +25,7 @@ public class PlanExecutionRecordController {
 
     @GetMapping("latest")
     public PlanExecutionRecordDto latest(@PathVariable String uuid) {
-        final PlanExecutionRecordEntity executionContextEntity = dataAccess.findLatestExecutionContext(uuid);
+        final PlanExecutionRecordEntity executionContextEntity = dataAccess.findLatestExecutionRecord(uuid);
         return mapper.planExecutionRecordEntityToDto(executionContextEntity);
     }
 }

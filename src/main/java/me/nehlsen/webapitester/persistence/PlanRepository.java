@@ -7,6 +7,6 @@ import org.springframework.data.repository.ListCrudRepository;
 import java.util.List;
 import java.util.UUID;
 
-public interface PlanRepository extends ListCrudRepository<PlanEntity, UUID> {
+interface PlanRepository extends ListCrudRepository<PlanEntity, UUID> {
     List<PlanListView> findAllListViewBy();
 }
