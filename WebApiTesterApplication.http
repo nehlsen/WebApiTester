@@ -93,6 +93,32 @@ Content-Type: application/json
 
 ###
 
+#@name create plan with tasks and assertion - which always fails
+#@no-log
+POST {{host}}/plans/
+Content-Type: application/json
+
+{
+  "name": "HTTP GET, expect HTTP-OK, 10s delayed",
+  "tasks": [
+    {
+      "type": "http_get",
+      "name": "HTTP GET. 10s response delay",
+      "uri": "https://httpbin.org/delay/10",
+      "assertions": [
+        {
+          "type": "response_status_code",
+          "parameters": {
+            "expectedStatusCode": 200
+          }
+        }
+      ]
+    }
+  ]
+}
+
+###
+
 #@name create plan with tasks and assertion and a schedule to run every 10 seconds
 #@no-log
 POST {{host}}/plans/

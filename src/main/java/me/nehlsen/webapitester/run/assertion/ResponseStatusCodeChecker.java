@@ -22,11 +22,11 @@ public class ResponseStatusCodeChecker implements AssertionChecker {
         log.info(
                 "check ({} ==? {})",
                 responseStatusCodeAssertion.getExpectedStatusCode(),
-                context.getResponse().statusCode()
+                context.getResponse().getStatusCode()
         );
 
         return new AssertionResult(
-                responseStatusCodeAssertion.getExpectedStatusCode() == context.getResponse().statusCode()
+                responseStatusCodeAssertion.getExpectedStatusCode() == context.getResponse().getStatusCode()
         );
     }
 }

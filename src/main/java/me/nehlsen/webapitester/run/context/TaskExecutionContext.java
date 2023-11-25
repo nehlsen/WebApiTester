@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import me.nehlsen.webapitester.run.assertion.AssertionResult;
 import me.nehlsen.webapitester.run.dto.AssertionDto;
+import me.nehlsen.webapitester.run.dto.HttpRequestDto;
+import me.nehlsen.webapitester.run.dto.HttpResponseDto;
 import me.nehlsen.webapitester.run.dto.TaskDto;
 
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -15,12 +15,18 @@ import java.util.Map;
 
 @Getter @Setter
 public class TaskExecutionContext {
+    public enum RequestFailedReason {
+        NotFailed,
+        HttpTimeout,
+        OtherReason,
+    }
+
     private final PlanExecutionContext planExecutionContext;
 
     private final TaskDto task;
-    private HttpRequest request; // FIXME replace with a DTO
-    private long requestTimeMillis; // FIXME merge with request DTO
-    private HttpResponse<String> response; // FIXME replace with a DTO
+    private HttpRequestDto request;
+    private RequestFailedReason requestFailed = RequestFailedReason.NotFailed;
+    private HttpResponseDto response;
 
     private Map<AssertionDto, List<AssertionResult>> assertionResults = new HashMap<>();
 

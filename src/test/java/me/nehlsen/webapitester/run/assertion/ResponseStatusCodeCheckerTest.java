@@ -2,6 +2,7 @@ package me.nehlsen.webapitester.run.assertion;
 
 import me.nehlsen.webapitester.run.context.TaskExecutionContext;
 import me.nehlsen.webapitester.run.dto.AssertionDto;
+import me.nehlsen.webapitester.run.dto.HttpResponseDto;
 import me.nehlsen.webapitester.run.dto.ResponseStatusCodeAssertionDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,9 +43,8 @@ class ResponseStatusCodeCheckerTest {
     public void check_result_is_positive_if_code_matches() {
         final int expectedStatusCode = 222;
 
-        @SuppressWarnings("unchecked")
-        HttpResponse<String> httpResponse = (HttpResponse<String>)Mockito.mock(HttpResponse.class);
-        Mockito.when(httpResponse.statusCode()).thenReturn(expectedStatusCode);
+        HttpResponseDto httpResponse = Mockito.mock(HttpResponseDto.class);
+        Mockito.when(httpResponse.getStatusCode()).thenReturn(expectedStatusCode);
 
         TaskExecutionContext context = Mockito.mock(TaskExecutionContext.class);
         Mockito.when(context.getResponse()).thenReturn(httpResponse);
@@ -59,9 +59,8 @@ class ResponseStatusCodeCheckerTest {
         final int actualStatusCode = 444;
         final int expectedStatusCode = 222;
 
-        @SuppressWarnings("unchecked")
-        HttpResponse<String> httpResponse = (HttpResponse<String>)Mockito.mock(HttpResponse.class);
-        Mockito.when(httpResponse.statusCode()).thenReturn(actualStatusCode);
+        HttpResponseDto httpResponse = Mockito.mock(HttpResponseDto.class);
+        Mockito.when(httpResponse.getStatusCode()).thenReturn(actualStatusCode);
 
         TaskExecutionContext context = Mockito.mock(TaskExecutionContext.class);
         Mockito.when(context.getResponse()).thenReturn(httpResponse);

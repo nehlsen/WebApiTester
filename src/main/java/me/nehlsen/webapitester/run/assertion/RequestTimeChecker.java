@@ -21,12 +21,12 @@ public class RequestTimeChecker implements AssertionChecker {
 
         log.info(
                 "check ({}ms <? {}ms)",
-                context.getRequestTimeMillis(),
+                context.getResponse().getResponseTimeMillis(),
                 requestTimeAssertion.getMaximumRequestTimeMillis()
         );
 
         return new AssertionResult(
-                context.getRequestTimeMillis() < requestTimeAssertion.getMaximumRequestTimeMillis()
+                context.getResponse().getResponseTimeMillis() < requestTimeAssertion.getMaximumRequestTimeMillis()
         );
     }
 }
