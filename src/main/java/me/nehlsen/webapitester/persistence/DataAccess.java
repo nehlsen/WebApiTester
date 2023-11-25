@@ -8,6 +8,7 @@ import me.nehlsen.webapitester.persistence.plan.PlanEntityFactory;
 import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntity;
 import me.nehlsen.webapitester.persistence.plan.PlanListView;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -64,6 +65,11 @@ public class DataAccess {
         return executionRecordRepository
                 .findFirstByPlan_UuidOrderByCreatedDesc(UUID.fromString(uuid))
                 .orElseThrow(() -> new PlanExecutionRecordNotFoundException("No Plan Execution Record found"));
+    }
+
+    public List<PlanExecutionRecordEntity> findExecutionRecords(String uuid, int page, int pageSize) {
+        return executionRecordRepository
+                .findByPlan_UuidOrderByCreatedDesc(UUID.fromString(uuid), Pageable.ofSize(pageSize).withPage(page));
     }
 
     public PlanExecutionRecordEntity save(PlanExecutionRecordEntity executionRecord) {

@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "plans/{uuid}/execution-records")
@@ -23,9 +26,15 @@ public class PlanExecutionRecordController {
         this.mapper = mapper;
     }
 
-    @GetMapping("latest")
+    @GetMapping("/latest")
     public PlanExecutionRecordDto latest(@PathVariable String uuid) {
         final PlanExecutionRecordEntity executionContextEntity = dataAccess.findLatestExecutionRecord(uuid);
         return mapper.planExecutionRecordEntityToDto(executionContextEntity);
+    }
+
+    @GetMapping("/")
+    public List<PlanExecutionRecordDto> all(@PathVariable String uuid, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
+        final List<PlanExecutionRecordEntity> executionRecords = dataAccess.findExecutionRecords(uuid, page, pageSize);
+        return mapper.planExecutionRecordsEntityToDtos(executionRecords);
     }
 }
