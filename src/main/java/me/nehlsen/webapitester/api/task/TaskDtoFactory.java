@@ -29,6 +29,7 @@ public class TaskDtoFactory {
                 taskType(task),
                 task.getName(),
                 Objects.requireNonNullElse(task.getUri(), URI.create("")).toString(),
+                task.getParameters(),
                 task.getAssertions().stream().map(assertionDtoFactory::fromEntity).toList()
         );
     }
