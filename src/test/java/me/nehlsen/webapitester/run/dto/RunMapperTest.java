@@ -4,6 +4,7 @@ import me.nehlsen.webapitester.fixture.PlanEntityFixture;
 import me.nehlsen.webapitester.fixture.TaskEntityFixture;
 import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
+import me.nehlsen.webapitester.persistence.task.HttpPostTaskEntity;
 import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
 import me.nehlsen.webapitester.persistence.assertion.RequestTimeAssertionEntity;
 import me.nehlsen.webapitester.persistence.assertion.ResponseStatusCodeAssertionEntity;
@@ -70,7 +71,23 @@ class RunMapperTest {
         assertThat(httpGetTaskDto.getUuid()).isEqualTo(httpGetTaskEntity.getUuid());
         assertThat(httpGetTaskDto.getName()).isEqualTo(httpGetTaskEntity.getName());
         assertThat(httpGetTaskDto.getUri()).isEqualTo(httpGetTaskEntity.getUri());
+        assertThat(httpGetTaskDto.getParameters()).hasSize(httpGetTaskEntity.getParameters().size());
         assertThat(httpGetTaskDto.getAssertions()).hasSize(httpGetTaskEntity.getAssertions().size());
+    }
+
+    @Test
+    public void map_http_post_task_entity_to_dto() {
+        final HttpPostTaskEntity httpPostTaskEntity = TaskEntityFixture.httpPostTaskEntityWithoutAssertions();
+
+        final TaskDto taskDto = mapper.taskEntityToDto(httpPostTaskEntity);
+        assertThat(taskDto).isInstanceOf(HttpPostTaskDto.class);
+
+        final HttpPostTaskDto httpPostTaskDto = mapper.httpPostTaskEntityToDto(httpPostTaskEntity);
+        assertThat(httpPostTaskDto.getUuid()).isEqualTo(httpPostTaskEntity.getUuid());
+        assertThat(httpPostTaskDto.getName()).isEqualTo(httpPostTaskEntity.getName());
+        assertThat(httpPostTaskDto.getUri()).isEqualTo(httpPostTaskEntity.getUri());
+        assertThat(httpPostTaskDto.getParameters()).hasSize(httpPostTaskEntity.getParameters().size());
+        assertThat(httpPostTaskDto.getAssertions()).hasSize(httpPostTaskEntity.getAssertions().size());
     }
 
     @Test

@@ -12,6 +12,7 @@ public class TaskEntityFactory {
 
     public static final String TASK_TYPE_VOID = "void";
     public static final String TASK_TYPE_HTTP_GET = "http_get";
+    public static final String TASK_TYPE_HTTP_POST = "http_post";
 
     private final AssertionEntityFactory assertionEntityFactory;
 
@@ -22,23 +23,42 @@ public class TaskEntityFactory {
     public TaskEntity newTask(CreateTaskDto taskDto) {
         Objects.requireNonNull(taskDto, "TaskEntityFactory::newTask: requires non null TaskDto");
 
-        TaskEntity taskEntity;
+        final String taskType = taskDto.getType();
 
-        if (taskDto.getType().equals(TASK_TYPE_VOID)) {
-            VoidTaskEntity voidTaskEntity = new VoidTaskEntity();
-            taskEntity = voidTaskEntity;
-        } else if (taskDto.getType().equals(TASK_TYPE_HTTP_GET)) {
-            HttpGetTaskEntity httpGetTaskEntity = new HttpGetTaskEntity();
-            taskEntity = httpGetTaskEntity;
-        } else {
-            throw UnknownTaskTypeException.ofTypeString(taskDto.getType());
-        }
+        return switch (taskType) {
+            case TASK_TYPE_VOID -> createVoidTaskEntity(taskDto);
+            case TASK_TYPE_HTTP_GET -> createHttpGetTaskEntity(taskDto);
+            case TASK_TYPE_HTTP_POST -> createHttpPostTaskEntity(taskDto);
+            default -> throw UnknownTaskTypeException.ofTypeString(taskType);
+        };
+    }
 
+    private VoidTaskEntity createVoidTaskEntity(CreateTaskDto taskDto) {
+        VoidTaskEntity voidTaskEntity = new VoidTaskEntity();
+        setCommonProperties(taskDto, voidTaskEntity);
+
+        return voidTaskEntity;
+    }
+
+    private HttpGetTaskEntity createHttpGetTaskEntity(CreateTaskDto taskDto) {
+        HttpGetTaskEntity httpGetTaskEntity = new HttpGetTaskEntity();
+        setCommonProperties(taskDto, httpGetTaskEntity);
+
+        return httpGetTaskEntity;
+    }
+
+    private HttpPostTaskEntity createHttpPostTaskEntity(CreateTaskDto taskDto) {
+        HttpPostTaskEntity httpPostTaskEntity = new HttpPostTaskEntity();
+        setCommonProperties(taskDto, httpPostTaskEntity);
+
+        return httpPostTaskEntity;
+    }
+
+    private void setCommonProperties(CreateTaskDto taskDto, TaskEntity taskEntity) {
         taskEntity.setName(taskDto.getName());
         taskEntity.setUri(URI.create(taskDto.getUri()));
+        taskEntity.setParameters(taskDto.getParameters());
 
         taskEntity.setAssertions(taskDto.getAssertions().stream().map(assertionEntityFactory::newAssertion).toList());
-
-        return taskEntity;
     }
 }

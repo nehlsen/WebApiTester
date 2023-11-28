@@ -1,10 +1,12 @@
 package me.nehlsen.webapitester.fixture;
 
 import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
+import me.nehlsen.webapitester.persistence.task.HttpPostTaskEntity;
 import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class TaskEntityFixture {
@@ -26,5 +28,16 @@ public class TaskEntityFixture {
         httpGetTaskEntity.setAssertions(List.of());
 
         return httpGetTaskEntity;
+    }
+
+    public static HttpPostTaskEntity httpPostTaskEntityWithoutAssertions() {
+        HttpPostTaskEntity httpPostTaskEntity = new HttpPostTaskEntity();
+        httpPostTaskEntity.setUuid(UUID.fromString("af70b1d3-ad41-4d9f-b44a-f3cc7524d142"));
+        httpPostTaskEntity.setName("some http post task");
+        httpPostTaskEntity.setUri(URI.create("scheme://host/path"));
+        httpPostTaskEntity.setParameters(Map.of("body", "some data to post"));
+        httpPostTaskEntity.setAssertions(List.of());
+
+        return httpPostTaskEntity;
     }
 }

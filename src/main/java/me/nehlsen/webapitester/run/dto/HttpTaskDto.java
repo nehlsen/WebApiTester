@@ -5,5 +5,7 @@ import lombok.Data;
 import java.net.URI;
 
 @Data
-public class HttpGetTaskDto extends HttpTaskDto {
+abstract public class HttpTaskDto extends TaskDto {
+
+    URI uri;
 }

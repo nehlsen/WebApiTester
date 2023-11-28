@@ -73,7 +73,7 @@ public class ApiTest {
 
     @Test
     void create_plan_with_name_and_tasks_but_no_assertions() {
-        final CreateTaskDto taskDto = new CreateTaskDto("void", "empty task", "needs://a-valid.url", List.of());
+        final CreateTaskDto taskDto = new CreateTaskDto("void", "empty task", "needs://a-valid.url");
         final CreatePlanDto planDto = new CreatePlanDto("some plan with task", List.of(taskDto));
 
         final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plans/", planDto, PlanDto.class);
@@ -100,7 +100,7 @@ public class ApiTest {
     @Test
     void create_plan_with_name_and_tasks_including_assertions() {
         final CreateAssertionDto assertionDto = new CreateAssertionDto("response_status_code", Map.of("expectedStatusCode", "200"));
-        final CreateTaskDto taskDto = new CreateTaskDto("http_get", "request BadSSL", "https://badssl.com", List.of(assertionDto));
+        final CreateTaskDto taskDto = new CreateTaskDto("http_get", "request BadSSL", "https://badssl.com").withAssertions(List.of(assertionDto));
         final CreatePlanDto planDto = new CreatePlanDto("some plan with task and assertion", List.of(taskDto));
 
         final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plans/", planDto, PlanDto.class);
@@ -127,6 +127,30 @@ public class ApiTest {
         assertThat(firstAssertionDto.getType()).isEqualTo("response_status_code");
         assertThat(firstAssertionDto.getParameters()).isNotNull().hasSize(1);
         assertThat(firstAssertionDto.getParameters()).containsEntry("expectedStatusCode", "200");
+    }
+
+    @Test
+    void create_plan_with_post_task() {
+        final CreateTaskDto taskDto = new CreateTaskDto("http_post", "post some data", "https://somedomain.com").withParameters(Map.of("body", "some data to post"));
+        final CreatePlanDto planDto = new CreatePlanDto("some plan with post task", List.of(taskDto));
+
+        final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plans/", planDto, PlanDto.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getHeaders().getLocation()).isNotNull();
+        final String uuid = extractUuidFromLocation(response.getHeaders().getLocation());
+
+        final ResponseEntity<PlanDto> planResponse = testRestTemplate.getForEntity(response.getHeaders().getLocation(), PlanDto.class);
+        assertThat(planResponse.getStatusCode().is2xxSuccessful()).isTrue();
+
+        final PlanDto returnedPlanDto = planResponse.getBody();
+        assertThat(returnedPlanDto).isNotNull();
+        assertThat(returnedPlanDto.getTasks()).isNotNull().hasSize(1);
+        final TaskDto firstTaskDto = returnedPlanDto.getTasks().get(0);
+        assertThat(firstTaskDto.getUuid()).isNotEmpty();
+        assertThat(firstTaskDto.getType()).isEqualTo("http_post");
+        assertThat(firstTaskDto.getName()).isEqualTo("post some data");
+        assertThat(firstTaskDto.getUri()).isEqualTo("https://somedomain.com");
+        assertThat(firstTaskDto.getParameters()).isNotNull().hasSize(1).containsEntry("body", "some data to post");
     }
 
     @Test

@@ -2,6 +2,7 @@ package me.nehlsen.webapitester.api.task;
 
 import me.nehlsen.webapitester.api.assertion.AssertionDtoFactory;
 import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
+import me.nehlsen.webapitester.persistence.task.HttpPostTaskEntity;
 import me.nehlsen.webapitester.persistence.task.TaskEntity;
 import me.nehlsen.webapitester.persistence.task.TaskEntityFactory;
 import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
@@ -38,6 +39,9 @@ public class TaskDtoFactory {
         }
         if (task instanceof HttpGetTaskEntity) {
             return TaskEntityFactory.TASK_TYPE_HTTP_GET;
+        }
+        if (task instanceof HttpPostTaskEntity) {
+            return TaskEntityFactory.TASK_TYPE_HTTP_POST;
         }
 
         throw UnknownTaskTypeException.ofTypeEntity(task);

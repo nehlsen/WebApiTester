@@ -3,6 +3,7 @@ package me.nehlsen.webapitester.api.task;
 import me.nehlsen.webapitester.api.assertion.AssertionDtoFactory;
 import me.nehlsen.webapitester.fixture.TaskEntityFixture;
 import me.nehlsen.webapitester.persistence.task.HttpGetTaskEntity;
+import me.nehlsen.webapitester.persistence.task.HttpPostTaskEntity;
 import me.nehlsen.webapitester.persistence.task.TaskEntity;
 import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
 import me.nehlsen.webapitester.persistence.task.UnknownTaskTypeException;
@@ -49,6 +50,18 @@ class TaskDtoFactoryTest {
         assertThat(taskDto.getName()).isEqualTo(httpGetTaskEntity.getName());
         assertThat(taskDto.getUri()).isEqualTo(httpGetTaskEntity.getUri().toString());
         assertThat(taskDto.getType()).isEqualTo("http_get");
+    }
+
+    @Test
+    public void create_from_http_post_task_entity() {
+        final HttpPostTaskEntity httpPostTaskEntity = TaskEntityFixture.httpPostTaskEntityWithoutAssertions();
+
+        final TaskDto taskDto = taskDtoFactory.fromEntity(httpPostTaskEntity);
+        assertThat(taskDto.getUuid()).isEqualTo(httpPostTaskEntity.getUuid().toString());
+        assertThat(taskDto.getName()).isEqualTo(httpPostTaskEntity.getName());
+        assertThat(taskDto.getUri()).isEqualTo(httpPostTaskEntity.getUri().toString());
+        assertThat(taskDto.getType()).isEqualTo("http_post");
+        assertThat(taskDto.getParameters()).isEqualTo(httpPostTaskEntity.getParameters());
     }
 
     @Test

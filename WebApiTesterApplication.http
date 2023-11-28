@@ -147,6 +147,28 @@ Content-Type: application/json
 
 ###
 
+#@name create plan with post task - TODO add assertion to verify reponse content
+#@no-log
+POST {{host}}/plans/
+Content-Type: application/json
+
+{
+  "name": "HTTP POST",
+  "tasks": [
+    {
+      "type": "http_post",
+      "name": "HTTP POST test data",
+      "uri": "https://httpbin.org/post",
+      "parameters": {
+        "body": "{\n  \"some\": \"thing\"\n}"
+      },
+      "assertions": []
+    }
+  ]
+}
+
+###
+
 #@name get all plans
 #@no-log
 GET {{host}}/plans/

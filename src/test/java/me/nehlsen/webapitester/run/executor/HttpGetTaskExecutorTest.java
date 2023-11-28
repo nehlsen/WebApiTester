@@ -1,16 +1,21 @@
 package me.nehlsen.webapitester.run.executor;
 
 import me.nehlsen.webapitester.run.dto.HttpGetTaskDto;
-import me.nehlsen.webapitester.run.dto.HttpRequestResponseMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
-class HttpGetTaskExecutorTest {
+class HttpGetTaskExecutorTest extends HttpTaskExecutorTest {
+
+    @BeforeEach
+    void setUp() {
+        super.setUp();
+        httpTaskExecutor = new HttpGetTaskExecutor(httpClientFactory, httpRequestResponseMapper);
+    }
+
     @Test
     public void it_supports_HttpGetTaskDto() {
-        final HttpGetTaskExecutor httpGetTaskExecutor = new HttpGetTaskExecutor(mock(HttpRequestResponseMapper.class));
-        assertThat(httpGetTaskExecutor.supports(new HttpGetTaskDto())).isTrue();
+        assertThat(httpTaskExecutor.supports(new HttpGetTaskDto())).isTrue();
     }
 }
