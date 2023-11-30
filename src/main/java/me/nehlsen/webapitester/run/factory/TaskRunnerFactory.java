@@ -5,6 +5,7 @@ import me.nehlsen.webapitester.run.assertion.AssertionsChecker;
 import me.nehlsen.webapitester.run.context.PlanExecutionContext;
 import me.nehlsen.webapitester.run.context.TaskExecutionContextFactory;
 import me.nehlsen.webapitester.run.executor.TaskExecutor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,15 +16,17 @@ public class TaskRunnerFactory {
     private final List<TaskExecutor> taskExecutors;
     private final TaskExecutionContextFactory taskExecutionContextFactory;
     private final AssertionsChecker assertionsChecker;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public TaskRunnerFactory(
             List<TaskExecutor> taskExecutors,
             TaskExecutionContextFactory taskExecutionContextFactory,
-            AssertionsChecker assertionsChecker
-    ) {
+            AssertionsChecker assertionsChecker,
+            ApplicationEventPublisher applicationEventPublisher) {
         this.taskExecutors = taskExecutors;
         this.taskExecutionContextFactory = taskExecutionContextFactory;
         this.assertionsChecker = assertionsChecker;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public TaskRunner create(PlanExecutionContext planExecutionContext) {
@@ -31,7 +34,8 @@ public class TaskRunnerFactory {
                 taskExecutors,
                 planExecutionContext,
                 taskExecutionContextFactory,
-                assertionsChecker
+                assertionsChecker,
+                applicationEventPublisher
         );
     }
 }

@@ -6,7 +6,10 @@ import me.nehlsen.webapitester.run.context.PlanExecutionContext;
 import me.nehlsen.webapitester.run.context.TaskExecutionContext;
 import me.nehlsen.webapitester.run.context.TaskExecutionContextFactory;
 import me.nehlsen.webapitester.run.dto.TaskDto;
+import me.nehlsen.webapitester.run.event.AfterRunTaskEvent;
+import me.nehlsen.webapitester.run.event.BeforeRunTaskEvent;
 import me.nehlsen.webapitester.run.executor.TaskExecutor;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
 
@@ -17,17 +20,19 @@ public class TaskRunner {
     private final PlanExecutionContext planExecutionContext;
     private final TaskExecutionContextFactory taskExecutionContextFactory;
     private final AssertionsChecker assertionsChecker;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public TaskRunner(
             List<TaskExecutor> taskExecutors,
             PlanExecutionContext planExecutionContext,
             TaskExecutionContextFactory taskExecutionContextFactory,
-            AssertionsChecker assertionsChecker
-    ) {
+            AssertionsChecker assertionsChecker,
+            ApplicationEventPublisher applicationEventPublisher) {
         this.taskExecutors = taskExecutors;
         this.planExecutionContext = planExecutionContext;
         this.taskExecutionContextFactory = taskExecutionContextFactory;
         this.assertionsChecker = assertionsChecker;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public void execute(List<TaskDto> tasks) {
@@ -46,9 +51,13 @@ public class TaskRunner {
                 previousContext
         );
 
+        applicationEventPublisher.publishEvent(new BeforeRunTaskEvent(this, taskExecutionContext));
         taskExecutors.stream()
                 .filter(taskExecutor -> taskExecutor.supports(task))
                 .forEach(taskExecutor -> executeTaskAndRunAssertions(taskExecutor, taskExecutionContext));
+        applicationEventPublisher.publishEvent(new AfterRunTaskEvent(this, taskExecutionContext));
+
+        return taskExecutionContext;
     }
 
     private void executeTaskAndRunAssertions(TaskExecutor taskExecutor, TaskExecutionContext taskExecutionContext) {
