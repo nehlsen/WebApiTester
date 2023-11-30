@@ -1,5 +1,6 @@
 package me.nehlsen.webapitester.run.executor;
 
+import me.nehlsen.webapitester.run.context.TaskExecutionContext;
 import me.nehlsen.webapitester.run.dto.HttpGetTaskDto;
 import me.nehlsen.webapitester.run.dto.HttpRequestResponseMapper;
 import me.nehlsen.webapitester.run.dto.TaskDto;
@@ -27,7 +28,7 @@ public class HttpGetTaskExecutor extends HttpTaskExecutor {
     }
 
     @Override
-    protected HttpRequest.BodyPublisher requestBody() {
+    protected HttpRequest.BodyPublisher requestBody(TaskExecutionContext context) {
         return HttpRequest.BodyPublishers.noBody();
     }
 }

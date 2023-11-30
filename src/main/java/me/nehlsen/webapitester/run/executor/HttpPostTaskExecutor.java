@@ -1,5 +1,6 @@
 package me.nehlsen.webapitester.run.executor;
 
+import me.nehlsen.webapitester.run.context.TaskExecutionContext;
 import me.nehlsen.webapitester.run.dto.HttpPostTaskDto;
 import me.nehlsen.webapitester.run.dto.HttpRequestResponseMapper;
 import me.nehlsen.webapitester.run.dto.TaskDto;
@@ -12,8 +13,15 @@ import java.net.http.HttpRequest;
 @Component
 public class HttpPostTaskExecutor extends HttpTaskExecutor {
 
-    public HttpPostTaskExecutor(HttpClientFactory httpClientFactory, HttpRequestResponseMapper requestResponseMapper) {
+    private final RequestBodyFactory requestBodyFactory;
+
+    public HttpPostTaskExecutor(
+            HttpClientFactory httpClientFactory,
+            HttpRequestResponseMapper requestResponseMapper,
+            RequestBodyFactory requestBodyFactory
+    ) {
         super(httpClientFactory, requestResponseMapper);
+        this.requestBodyFactory = requestBodyFactory;
     }
 
     @Override
@@ -27,7 +35,11 @@ public class HttpPostTaskExecutor extends HttpTaskExecutor {
     }
 
     @Override
-    protected HttpRequest.BodyPublisher requestBody() {
-        return HttpRequest.BodyPublishers.ofString("some body text");
+    protected HttpRequest.BodyPublisher requestBody(TaskExecutionContext context) {
+        return HttpRequest.BodyPublishers.ofString(evaluateRequestBody(context));
+    }
+
+    private String evaluateRequestBody(TaskExecutionContext context) {
+        return requestBodyFactory.buildBody(context);
     }
 }

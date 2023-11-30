@@ -5,12 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 class HttpPostTaskExecutorTest extends HttpTaskExecutorTest {
     @BeforeEach
     void setUp() {
         super.setUp();
-        httpTaskExecutor = new HttpPostTaskExecutor(httpClientFactory, httpRequestResponseMapper);
+        httpTaskExecutor = new HttpPostTaskExecutor(httpClientFactory, httpRequestResponseMapper, mock(RequestBodyFactory.class));
     }
 
     @Test

@@ -38,21 +38,22 @@ public abstract class HttpTaskExecutor implements TaskExecutor {
     public void execute(TaskExecutionContext context) {
         runRequest(
                 context,
-                createRequest((HttpTaskDto) context.getTask())
+                createRequest(context)
         );
     }
 
-    private HttpRequest createRequest(HttpTaskDto httpTask) {
+    private HttpRequest createRequest(TaskExecutionContext context) {
+        final HttpTaskDto task = (HttpTaskDto) context.getTask();
         return createRequestBuilder()
-                .uri(httpTask.getUri())
+                .uri(task.getUri())
                 .timeout(Duration.of(DEFAULT_REQUEST_TIMEOUT_SECONDS, ChronoUnit.SECONDS))
-                .method(requestMethod(), requestBody())
+                .method(requestMethod(), requestBody(context))
                 .build();
     }
 
     abstract protected String requestMethod();
 
-    abstract protected HttpRequest.BodyPublisher requestBody();
+    abstract protected HttpRequest.BodyPublisher requestBody(TaskExecutionContext context);
 
     private HttpRequest.Builder createRequestBuilder() {
         return HttpRequest.newBuilder();
