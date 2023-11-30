@@ -55,10 +55,12 @@ class HttpRequestResponseMapperTest {
         final HttpResponse httpResponse = mock(HttpResponse.class);
         when(httpResponse.statusCode()).thenReturn(418);
         when(httpResponse.headers()).thenReturn(httpHeaders);
+        when(httpResponse.body()).thenReturn("raw body data of response");
 
         final HttpResponseDto dto = mapper.toDto(httpResponse);
 
         assertThat(dto.getStatusCode()).isEqualTo(418);
         assertThat(dto.getHeaders()).isEqualTo(headersMap);
+        assertThat(dto.getBody()).isEqualTo("raw body data of response");
     }
 }

@@ -16,5 +16,6 @@ public interface HttpRequestResponseMapper {
 
     @Mapping(expression = "java(httpResponse.statusCode())", target = "statusCode")
     @Mapping(expression = "java(httpResponse.headers().map())", target = "headers")
-    HttpResponseDto toDto(HttpResponse<?> httpResponse);
+    @Mapping(expression = "java(httpResponse.body())", target = "body")
+    HttpResponseDto toDto(HttpResponse<String> httpResponse);
 }

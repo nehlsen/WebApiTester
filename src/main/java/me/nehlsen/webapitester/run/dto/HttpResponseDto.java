@@ -9,6 +9,7 @@ import java.util.Map;
 public class HttpResponseDto {
     private int statusCode;
     private Map<String, List<String>> headers;
+    private String body; // FIXME limit to e.g. 10kb
 
     private long responseTimeMillis;
 }

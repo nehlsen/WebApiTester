@@ -63,7 +63,7 @@ public abstract class HttpTaskExecutor implements TaskExecutor {
         log.info("runRequest: {} {}", httpRequest.method(), httpRequest.uri());
         context.setRequest(requestResponseMapper.toDto(httpRequest));
 
-        FunctionCallStopwatch<Optional<HttpResponse<?>>> stopWatch = new FunctionCallStopwatch<>();
+        FunctionCallStopwatch<Optional<HttpResponse<String>>> stopWatch = new FunctionCallStopwatch<>();
         stopWatch
                 .run(() -> {
                     try {
@@ -81,10 +81,12 @@ public abstract class HttpTaskExecutor implements TaskExecutor {
                     final HttpResponseDto responseDto = requestResponseMapper.toDto(response);
                     responseDto.setResponseTimeMillis(stopWatch.getTimeMillis());
                     context.setResponse(responseDto);
+
+                    log.debug("runRequest: SUCCESS, {}\n{}", response.statusCode(), response.body());
                 });
     }
 
-    private HttpResponse<?> executeHttpRequest(HttpRequest httpRequest) throws IOException, InterruptedException {
+    private HttpResponse<String> executeHttpRequest(HttpRequest httpRequest) throws IOException, InterruptedException {
         return httpClientFactory
                 .createClient()
                 .send(httpRequest, HttpResponse.BodyHandlers.ofString());
