@@ -137,7 +137,6 @@ public class ApiTest {
         final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plans/", planDto, PlanDto.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getHeaders().getLocation()).isNotNull();
-        final String uuid = extractUuidFromLocation(response.getHeaders().getLocation());
 
         final ResponseEntity<PlanDto> planResponse = testRestTemplate.getForEntity(response.getHeaders().getLocation(), PlanDto.class);
         assertThat(planResponse.getStatusCode().is2xxSuccessful()).isTrue();
