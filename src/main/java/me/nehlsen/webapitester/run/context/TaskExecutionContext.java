@@ -22,6 +22,7 @@ public class TaskExecutionContext {
     }
 
     private final PlanExecutionContext planExecutionContext;
+    private final TaskExecutionContext previous;
 
     private final TaskDto task;
     private HttpRequestDto request;
@@ -30,9 +31,10 @@ public class TaskExecutionContext {
 
     private Map<AssertionDto, List<AssertionResult>> assertionResults = new HashMap<>();
 
-    public TaskExecutionContext(TaskDto task, PlanExecutionContext planExecutionContext) {
+    public TaskExecutionContext(TaskDto task, PlanExecutionContext planExecutionContext, TaskExecutionContext previousContext) {
         this.task = task;
         this.planExecutionContext = planExecutionContext;
+        this.previous = previousContext;
     }
 
     public void addAssertionResults(AssertionDto assertion, List<AssertionResult> results) {

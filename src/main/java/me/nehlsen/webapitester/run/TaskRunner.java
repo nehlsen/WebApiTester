@@ -31,13 +31,20 @@ public class TaskRunner {
     }
 
     public void execute(List<TaskDto> tasks) {
-        tasks.forEach(this::execute);
+        TaskExecutionContext previousContext = null;
+        for (TaskDto task : tasks) {
+            previousContext = execute(task, previousContext);
+        }
     }
 
-    public void execute(TaskDto task) {
+    private TaskExecutionContext execute(TaskDto task, TaskExecutionContext previousContext) {
         log.info("Executing Task \"{}\"", task.getName());
 
-        final TaskExecutionContext taskExecutionContext = taskExecutionContextFactory.createContext(task, planExecutionContext);
+        final TaskExecutionContext taskExecutionContext = taskExecutionContextFactory.createContext(
+                task,
+                planExecutionContext,
+                previousContext
+        );
 
         taskExecutors.stream()
                 .filter(taskExecutor -> taskExecutor.supports(task))

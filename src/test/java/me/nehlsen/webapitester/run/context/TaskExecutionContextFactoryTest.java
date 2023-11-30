@@ -21,7 +21,7 @@ class TaskExecutionContextFactoryTest {
         TaskDto task = Mockito.mock(TaskDto.class);
         PlanExecutionContext planExecutionContext = Mockito.mock(PlanExecutionContext.class);
 
-        final TaskExecutionContext taskExecutionContext = taskExecutionContextFactory.createContext(task, planExecutionContext);
+        final TaskExecutionContext taskExecutionContext = taskExecutionContextFactory.createContext(task, planExecutionContext, null);
 
         assertThat(taskExecutionContext.getTask()).isSameAs(task);
         assertThat(taskExecutionContext.getPlanExecutionContext()).isSameAs(planExecutionContext);
@@ -32,7 +32,7 @@ class TaskExecutionContextFactoryTest {
         TaskDto task = Mockito.mock(TaskDto.class);
         PlanExecutionContext planExecutionContext = Mockito.mock(PlanExecutionContext.class);
 
-        taskExecutionContextFactory.createContext(task, planExecutionContext);
+        taskExecutionContextFactory.createContext(task, planExecutionContext, null);
 
         Mockito.verify(planExecutionContext, Mockito.atLeastOnce()).addTaskExecutionContext(Mockito.any());
     }

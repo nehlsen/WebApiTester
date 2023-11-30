@@ -17,7 +17,7 @@ class TaskExecutionContextTest {
         final TaskDto taskDto = mock(TaskDto.class);
         final PlanExecutionContext planExecutionContext = mock(PlanExecutionContext.class);
 
-        final TaskExecutionContext taskExecutionContext = new TaskExecutionContext(taskDto, planExecutionContext);
+        final TaskExecutionContext taskExecutionContext = new TaskExecutionContext(taskDto, planExecutionContext, null);
 
         assertThat(taskExecutionContext.getAssertionResults()).isEmpty();
         assertThat(taskExecutionContext.isResultPositive()).isTrue();
@@ -28,7 +28,7 @@ class TaskExecutionContextTest {
         final TaskDto taskDto = mock(TaskDto.class);
         final PlanExecutionContext planExecutionContext = mock(PlanExecutionContext.class);
 
-        final TaskExecutionContext taskExecutionContext = new TaskExecutionContext(taskDto, planExecutionContext);
+        final TaskExecutionContext taskExecutionContext = new TaskExecutionContext(taskDto, planExecutionContext, null);
 
         final AssertionDto assertionDto = mock(AssertionDto.class);
         taskExecutionContext.addAssertionResults(assertionDto, List.of(new AssertionResult(true)));
@@ -42,7 +42,7 @@ class TaskExecutionContextTest {
         final TaskDto taskDto = mock(TaskDto.class);
         final PlanExecutionContext planExecutionContext = mock(PlanExecutionContext.class);
 
-        final TaskExecutionContext taskExecutionContext = new TaskExecutionContext(taskDto, planExecutionContext);
+        final TaskExecutionContext taskExecutionContext = new TaskExecutionContext(taskDto, planExecutionContext, null);
 
         final AssertionDto assertionDto = mock(AssertionDto.class);
         taskExecutionContext.addAssertionResults(assertionDto, List.of(new AssertionResult(false)));
@@ -56,7 +56,7 @@ class TaskExecutionContextTest {
         final TaskDto taskDto = mock(TaskDto.class);
         final PlanExecutionContext planExecutionContext = mock(PlanExecutionContext.class);
 
-        final TaskExecutionContext taskExecutionContext = new TaskExecutionContext(taskDto, planExecutionContext);
+        final TaskExecutionContext taskExecutionContext = new TaskExecutionContext(taskDto, planExecutionContext, null);
 
         final AssertionDto assertionDto = mock(AssertionDto.class);
         taskExecutionContext.addAssertionResults(assertionDto, List.of(new AssertionResult(true), new AssertionResult(false)));
