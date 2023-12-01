@@ -1,4 +1,4 @@
-package me.nehlsen.webapitester.persistence.plan;
+package me.nehlsen.webapitester.persistence.record;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 

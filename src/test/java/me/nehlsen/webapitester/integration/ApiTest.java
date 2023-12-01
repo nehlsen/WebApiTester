@@ -10,7 +10,7 @@ import me.nehlsen.webapitester.api.plan.PlanDto;
 import me.nehlsen.webapitester.api.task.TaskDto;
 import me.nehlsen.webapitester.persistence.DataAccess;
 import me.nehlsen.webapitester.persistence.plan.PlanEntity;
-import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntity;
+import me.nehlsen.webapitester.persistence.record.PlanExecutionRecordEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

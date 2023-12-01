@@ -1,6 +1,6 @@
 package me.nehlsen.webapitester.api.plan;
 
-import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntity;
+import me.nehlsen.webapitester.persistence.record.PlanExecutionRecordEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;

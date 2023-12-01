@@ -5,7 +5,7 @@ import me.nehlsen.webapitester.persistence.event.AfterCreatePlanEvent;
 import me.nehlsen.webapitester.persistence.event.BeforeCreatePlanEvent;
 import me.nehlsen.webapitester.persistence.plan.PlanEntity;
 import me.nehlsen.webapitester.persistence.plan.PlanEntityFactory;
-import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntity;
+import me.nehlsen.webapitester.persistence.record.PlanExecutionRecordEntity;
 import me.nehlsen.webapitester.persistence.plan.PlanListView;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;

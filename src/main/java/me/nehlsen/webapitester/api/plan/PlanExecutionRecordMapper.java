@@ -1,6 +1,6 @@
 package me.nehlsen.webapitester.api.plan;
 
-import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntity;
+import me.nehlsen.webapitester.persistence.record.PlanExecutionRecordEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

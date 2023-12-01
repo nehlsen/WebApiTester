@@ -1,6 +1,6 @@
 package me.nehlsen.webapitester.persistence;
 
-import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntity;
+import me.nehlsen.webapitester.persistence.record.PlanExecutionRecordEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.ListCrudRepository;
 

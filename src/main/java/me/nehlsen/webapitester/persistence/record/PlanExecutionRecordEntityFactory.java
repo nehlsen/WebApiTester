@@ -1,4 +1,4 @@
-package me.nehlsen.webapitester.persistence.plan;
+package me.nehlsen.webapitester.persistence.record;
 
 import me.nehlsen.webapitester.persistence.DataAccess;
 import org.springframework.stereotype.Component;

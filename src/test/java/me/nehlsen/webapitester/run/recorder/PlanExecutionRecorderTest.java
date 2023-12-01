@@ -1,8 +1,8 @@
 package me.nehlsen.webapitester.run.recorder;
 
 import me.nehlsen.webapitester.persistence.DataAccess;
-import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntity;
-import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntityFactory;
+import me.nehlsen.webapitester.persistence.record.PlanExecutionRecordEntity;
+import me.nehlsen.webapitester.persistence.record.PlanExecutionRecordEntityFactory;
 import me.nehlsen.webapitester.run.context.PlanExecutionContext;
 import me.nehlsen.webapitester.run.dto.PlanDto;
 import org.junit.jupiter.api.BeforeEach;

@@ -3,7 +3,7 @@ package me.nehlsen.webapitester.api;
 import me.nehlsen.webapitester.api.plan.PlanExecutionRecordDto;
 import me.nehlsen.webapitester.api.plan.PlanExecutionRecordMapper;
 import me.nehlsen.webapitester.persistence.DataAccess;
-import me.nehlsen.webapitester.persistence.plan.PlanExecutionRecordEntity;
+import me.nehlsen.webapitester.persistence.record.PlanExecutionRecordEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
