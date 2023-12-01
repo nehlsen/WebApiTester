@@ -14,7 +14,6 @@ public class TaskEntityFixture {
         VoidTaskEntity voidTaskEntity = new VoidTaskEntity();
         voidTaskEntity.setUuid(UUID.fromString("af70b1d3-ad41-4d9f-b44a-f3cc7524d142"));
         voidTaskEntity.setName("some void task");
-        voidTaskEntity.setUri(URI.create("scheme://host/path"));
         voidTaskEntity.setAssertions(List.of());
 
         return voidTaskEntity;
@@ -36,6 +35,7 @@ public class TaskEntityFixture {
         httpPostTaskEntity.setName("some http post task");
         httpPostTaskEntity.setUri(URI.create("scheme://host/path"));
         httpPostTaskEntity.setParameters(Map.of("body", "some data to post"));
+        httpPostTaskEntity.setHeaders(Map.of("Content-Type", List.of("text/plain")));
         httpPostTaskEntity.setAssertions(List.of());
 
         return httpPostTaskEntity;

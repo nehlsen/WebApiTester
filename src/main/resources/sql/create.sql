@@ -4,10 +4,12 @@ create table plan_tasks (plan_entity_uuid uuid not null, tasks_uuid uuid not nul
 create table t_assertion (expected_status_code integer, created timestamp(6), maximum_request_time_millis bigint, updated timestamp(6), uuid uuid not null, dtype varchar(31) not null, primary key (uuid));
 create table task (created timestamp(6), updated timestamp(6), uuid uuid not null, dtype varchar(31) not null, name varchar(255), uri bytea, primary key (uuid));
 create table task_assertions (assertions_uuid uuid not null unique, task_entity_uuid uuid not null);
+create table task_headers (task_uuid uuid not null, header_name varchar(255) not null, header_values varchar(255) array, primary key (task_uuid, header_name));
 create table task_parameters (task_uuid uuid not null, parameter_name varchar(255) not null, parameter_value varchar(255), primary key (task_uuid, parameter_name));
 alter table if exists plan_execution_record add constraint FKlhqmbrqrfos237o5hv5g7mc7s foreign key (plan_uuid) references plan;
 alter table if exists plan_tasks add constraint FK2fq5ab00nw0vkxapu4yen7syg foreign key (tasks_uuid) references task;
 alter table if exists plan_tasks add constraint FK6yyt6hb2sh5rqwo7784abrwtb foreign key (plan_entity_uuid) references plan;
 alter table if exists task_assertions add constraint FKxmpqbescyqo2lbp7ps3hjks2 foreign key (assertions_uuid) references t_assertion;
 alter table if exists task_assertions add constraint FK1cm493bbhqcbbfekx30odj6rf foreign key (task_entity_uuid) references task;
+alter table if exists task_headers add constraint FKfetyajwevuq255do2csmwhfml foreign key (task_uuid) references task;
 alter table if exists task_parameters add constraint FKq788wsm2ukh49wijh9ejmb9on foreign key (task_uuid) references task;

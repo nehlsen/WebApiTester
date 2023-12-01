@@ -42,8 +42,6 @@ public abstract class TaskEntity {
 
     String name;
 
-    URI uri;
-
     @ElementCollection
     @JoinTable(name="task_parameters", joinColumns=@JoinColumn(name="task_uuid"))
     @MapKeyColumn(name="parameter_name")

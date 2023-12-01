@@ -73,7 +73,7 @@ public class ApiTest {
 
     @Test
     void create_plan_with_name_and_tasks_but_no_assertions() {
-        final CreateTaskDto taskDto = new CreateTaskDto("void", "empty task", "needs://a-valid.url");
+        final CreateTaskDto taskDto = new CreateTaskDto("void", "empty task");
         final CreatePlanDto planDto = new CreatePlanDto("some plan with task", List.of(taskDto));
 
         final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plans/", planDto, PlanDto.class);
@@ -93,7 +93,6 @@ public class ApiTest {
         assertThat(firstTaskDto.getUuid()).isNotEmpty();
         assertThat(firstTaskDto.getType()).isEqualTo("void");
         assertThat(firstTaskDto.getName()).isEqualTo("empty task");
-        assertThat(firstTaskDto.getUri()).isEqualTo("needs://a-valid.url");
         assertThat(firstTaskDto.getAssertions()).isNotNull().isEmpty();
     }
 
@@ -130,8 +129,11 @@ public class ApiTest {
     }
 
     @Test
-    void create_plan_with_post_task() {
-        final CreateTaskDto taskDto = new CreateTaskDto("http_post", "post some data", "https://somedomain.com").withParameters(Map.of("body", "some data to post"));
+    void create_plan_with_post_task_body_and_headers() {
+        final CreateTaskDto taskDto =
+                new CreateTaskDto("http_post", "post some data", "https://somedomain.com")
+                        .withParameters(Map.of("body", "some data to post"))
+                        .withHeaders(Map.of("Content-Type", List.of("text/plain")));
         final CreatePlanDto planDto = new CreatePlanDto("some plan with post task", List.of(taskDto));
 
         final ResponseEntity<PlanDto> response = testRestTemplate.postForEntity("/plans/", planDto, PlanDto.class);
@@ -150,6 +152,7 @@ public class ApiTest {
         assertThat(firstTaskDto.getName()).isEqualTo("post some data");
         assertThat(firstTaskDto.getUri()).isEqualTo("https://somedomain.com");
         assertThat(firstTaskDto.getParameters()).isNotNull().hasSize(1).containsEntry("body", "some data to post");
+        assertThat(firstTaskDto.getHeaders()).isNotNull().hasSize(1).containsEntry("Content-Type", List.of("text/plain"));
     }
 
     @Test

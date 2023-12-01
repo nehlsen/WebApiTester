@@ -21,11 +21,19 @@ import java.util.Map;
 public class CreateTaskDto {
     String type;
     String name;
+    @With
     String uri;
     @With
-    List<CreateAssertionDto> assertions = new ArrayList<>();
+    List<CreateAssertionDto> assertions = List.of();
     @With
-    Map<String, String> parameters = new HashMap<>();
+    Map<String, String> parameters = Map.of();
+    @With
+    Map<String, List<String>> headers = Map.of();
+
+    public CreateTaskDto(String type, String name) {
+        this.type = type;
+        this.name = name;
+    }
 
     public CreateTaskDto(String type, String name, String uri) {
         this.type = type;

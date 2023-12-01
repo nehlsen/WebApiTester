@@ -44,11 +44,19 @@ public abstract class HttpTaskExecutor implements TaskExecutor {
 
     private HttpRequest createRequest(TaskExecutionContext context) {
         final HttpTaskDto task = (HttpTaskDto) context.getTask();
-        return createRequestBuilder()
+
+        final HttpRequest.Builder requestBuilder = createRequestBuilder()
                 .uri(task.getUri())
                 .timeout(Duration.of(DEFAULT_REQUEST_TIMEOUT_SECONDS, ChronoUnit.SECONDS))
-                .method(requestMethod(), requestBody(context))
-                .build();
+                .method(requestMethod(), requestBody(context));
+
+        task.getHeaders().forEach((name, values) -> {
+            values.forEach(value -> {
+                requestBuilder.header(name, value);
+            });
+        });
+
+        return requestBuilder.build();
     }
 
     abstract protected String requestMethod();
@@ -82,7 +90,7 @@ public abstract class HttpTaskExecutor implements TaskExecutor {
                     responseDto.setResponseTimeMillis(stopWatch.getTimeMillis());
                     context.setResponse(responseDto);
 
-                    log.debug("runRequest: SUCCESS, {}\n{}", response.statusCode(), response.body());
+                    log.info("runRequest: SUCCESS, {}", response.statusCode());
                 });
     }
 

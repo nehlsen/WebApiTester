@@ -35,7 +35,6 @@ class TaskDtoFactoryTest {
         final TaskDto taskDto = taskDtoFactory.fromEntity(voidTaskEntity);
         assertThat(taskDto.getUuid()).isEqualTo(voidTaskEntity.getUuid().toString());
         assertThat(taskDto.getName()).isEqualTo(voidTaskEntity.getName());
-        assertThat(taskDto.getUri()).isEqualTo(voidTaskEntity.getUri().toString());
         assertThat(taskDto.getType()).isEqualTo("void");
     }
 
@@ -60,6 +59,7 @@ class TaskDtoFactoryTest {
         assertThat(taskDto.getUri()).isEqualTo(httpPostTaskEntity.getUri().toString());
         assertThat(taskDto.getType()).isEqualTo("http_post");
         assertThat(taskDto.getParameters()).isEqualTo(httpPostTaskEntity.getParameters());
+        assertThat(taskDto.getHeaders()).isEqualTo(httpPostTaskEntity.getHeaders());
     }
 
     @Test

@@ -24,12 +24,11 @@ class TaskEntityFactoryTest {
     }
 
     @Test
-    public void create_void_task_with_name_and_uri_but_no_assertions() {
-        final CreateTaskDto taskDto = new CreateTaskDto("void", "some task name", "needs://a-valid.url");
+    public void create_void_task_with_name_but_no_assertions() {
+        final CreateTaskDto taskDto = new CreateTaskDto("void", "some task name");
 
         final TaskEntity taskEntity = taskEntityFactory.newTask(taskDto);
         assertThat(taskEntity.getName()).isEqualTo(taskDto.getName());
-        assertThat(taskEntity.getUri().toString()).isEqualTo(taskDto.getUri());
         assertThat(taskEntity).isInstanceOf(VoidTaskEntity.class);
     }
 
@@ -39,8 +38,11 @@ class TaskEntityFactoryTest {
 
         final TaskEntity taskEntity = taskEntityFactory.newTask(taskDto);
         assertThat(taskEntity.getName()).isEqualTo(taskDto.getName());
-        assertThat(taskEntity.getUri().toString()).isEqualTo(taskDto.getUri());
         assertThat(taskEntity).isInstanceOf(HttpGetTaskEntity.class);
+
+        assertThat(taskEntity).isInstanceOf(HttpTaskEntity.class);
+        final HttpTaskEntity httpTaskEntity = (HttpTaskEntity) taskEntity;
+        assertThat(httpTaskEntity.getUri().toString()).isEqualTo(taskDto.getUri());
     }
 
     @Test
@@ -58,8 +60,11 @@ class TaskEntityFactoryTest {
 
         final TaskEntity taskEntity = taskEntityFactory.newTask(taskDto);
         assertThat(taskEntity).isInstanceOf(HttpPostTaskEntity.class);
-        assertThat(taskEntity.getUri().toString()).isEqualTo(taskDto.getUri());
         assertThat(taskEntity.getName()).isEqualTo(taskDto.getName());
         assertThat(taskEntity.getParameters()).isEqualTo(taskDto.getParameters());
+
+        assertThat(taskEntity).isInstanceOf(HttpTaskEntity.class);
+        final HttpTaskEntity httpTaskEntity = (HttpTaskEntity) taskEntity;
+        assertThat(httpTaskEntity.getUri().toString()).isEqualTo(taskDto.getUri());
     }
 }

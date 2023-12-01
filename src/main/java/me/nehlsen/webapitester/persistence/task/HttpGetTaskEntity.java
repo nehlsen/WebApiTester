@@ -5,5 +5,5 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-public class HttpGetTaskEntity extends TaskEntity {
+public class HttpGetTaskEntity extends HttpTaskEntity {
 }

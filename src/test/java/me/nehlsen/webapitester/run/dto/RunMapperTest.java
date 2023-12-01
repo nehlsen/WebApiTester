@@ -86,8 +86,9 @@ class RunMapperTest {
         assertThat(httpPostTaskDto.getUuid()).isEqualTo(httpPostTaskEntity.getUuid());
         assertThat(httpPostTaskDto.getName()).isEqualTo(httpPostTaskEntity.getName());
         assertThat(httpPostTaskDto.getUri()).isEqualTo(httpPostTaskEntity.getUri());
-        assertThat(httpPostTaskDto.getParameters()).hasSize(httpPostTaskEntity.getParameters().size());
+        assertThat(httpPostTaskDto.getParameters()).isEqualTo(httpPostTaskEntity.getParameters());
         assertThat(httpPostTaskDto.getAssertions()).hasSize(httpPostTaskEntity.getAssertions().size());
+        assertThat(httpPostTaskDto.getHeaders()).isEqualTo(httpPostTaskEntity.getHeaders());
     }
 
     @Test
