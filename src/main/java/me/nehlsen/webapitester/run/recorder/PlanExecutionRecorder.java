@@ -42,6 +42,7 @@ public class PlanExecutionRecorder {
 
         dataAccess.save(executionRecord);
         executionContextToRecord.put(planExecutionContext.getUuid(), executionRecord.getUuid());
+        planExecutionContext.setRecordUuid(executionRecord.getUuid());
     }
 
     public void executionEnd(PlanExecutionContext planExecutionContext) {
@@ -54,7 +55,7 @@ public class PlanExecutionRecorder {
             return;
         }
 
-        dataAccess.findExecutionRecordByUuid(executionContextToRecord.get(planExecutionContext.getUuid()))
+        dataAccess.findPlanExecutionRecordByUuid(executionContextToRecord.get(planExecutionContext.getUuid()))
                 .ifPresent(record -> {
                     record.setEndTimeEpochMillis(Instant.now().toEpochMilli());
                     record.setResultPositive(planExecutionContext.isResultPositive());

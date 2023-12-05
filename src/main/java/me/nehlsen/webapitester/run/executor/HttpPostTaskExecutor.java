@@ -13,15 +13,12 @@ import java.net.http.HttpRequest;
 @Component
 public class HttpPostTaskExecutor extends HttpTaskExecutor {
 
-    private final RequestBodyFactory requestBodyFactory;
-
     public HttpPostTaskExecutor(
             HttpClientFactory httpClientFactory,
             HttpRequestResponseMapper requestResponseMapper,
             RequestBodyFactory requestBodyFactory
     ) {
-        super(httpClientFactory, requestResponseMapper);
-        this.requestBodyFactory = requestBodyFactory;
+        super(httpClientFactory, requestResponseMapper, requestBodyFactory);
     }
 
     @Override
@@ -32,14 +29,5 @@ public class HttpPostTaskExecutor extends HttpTaskExecutor {
     @Override
     protected String requestMethod() {
         return "POST";
-    }
-
-    @Override
-    protected HttpRequest.BodyPublisher requestBody(TaskExecutionContext context) {
-        return HttpRequest.BodyPublishers.ofString(evaluateRequestBody(context));
-    }
-
-    private String evaluateRequestBody(TaskExecutionContext context) {
-        return requestBodyFactory.buildBody(context);
     }
 }

@@ -13,8 +13,6 @@ class HttpPostTaskExecutorTest extends HttpTaskExecutorTest {
     @BeforeEach
     void setUp() {
         super.setUp();
-        final RequestBodyFactory requestBodyFactory = mock(RequestBodyFactory.class);
-        when(requestBodyFactory.buildBody(any())).thenReturn("the body of the request");
         httpTaskExecutor = new HttpPostTaskExecutor(httpClientFactory, httpRequestResponseMapper, requestBodyFactory);
     }
 

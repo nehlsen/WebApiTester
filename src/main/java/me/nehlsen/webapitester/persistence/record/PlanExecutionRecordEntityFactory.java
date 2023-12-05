@@ -17,6 +17,7 @@ public class PlanExecutionRecordEntityFactory {
     public PlanExecutionRecordEntity create(final UUID plan) {
         final PlanExecutionRecordEntity executionRecord = new PlanExecutionRecordEntity();
         executionRecord.setPlan(dataAccess.findPlanByUuid(plan).orElseThrow());
+
         return executionRecord;
     }
 }

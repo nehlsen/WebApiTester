@@ -2,9 +2,11 @@ package me.nehlsen.webapitester.run.executor.http;
 
 import lombok.extern.log4j.Log4j2;
 import me.nehlsen.webapitester.run.context.TaskExecutionContext;
+import me.nehlsen.webapitester.run.dto.HttpRequestDto;
 import me.nehlsen.webapitester.run.dto.HttpRequestResponseMapper;
 import me.nehlsen.webapitester.run.dto.HttpResponseDto;
 import me.nehlsen.webapitester.run.dto.HttpTaskDto;
+import me.nehlsen.webapitester.run.executor.RequestBodyFactory;
 import me.nehlsen.webapitester.run.executor.TaskExecutor;
 import me.nehlsen.webapitester.util.FunctionCallStopwatch;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,30 +27,32 @@ public abstract class HttpTaskExecutor implements TaskExecutor {
 
     private final HttpClientFactory httpClientFactory;
     private final HttpRequestResponseMapper requestResponseMapper;
+    private final RequestBodyFactory requestBodyFactory;
 
     public HttpTaskExecutor(
             HttpClientFactory httpClientFactory,
-            HttpRequestResponseMapper requestResponseMapper
+            HttpRequestResponseMapper requestResponseMapper,
+            RequestBodyFactory requestBodyFactory
     ) {
         this.httpClientFactory = httpClientFactory;
         this.requestResponseMapper = requestResponseMapper;
+        this.requestBodyFactory = requestBodyFactory;
     }
 
     @Override
     public void execute(TaskExecutionContext context) {
-        runRequest(
-                context,
-                createRequest(context)
-        );
+        runRequest(createRequest(context), context);
     }
 
     private HttpRequest createRequest(TaskExecutionContext context) {
         final HttpTaskDto task = (HttpTaskDto) context.getTask();
 
+        final String body = evaluateRequestBody(context);
+
         final HttpRequest.Builder requestBuilder = createRequestBuilder()
                 .uri(task.getUri())
                 .timeout(Duration.of(DEFAULT_REQUEST_TIMEOUT_SECONDS, ChronoUnit.SECONDS))
-                .method(requestMethod(), requestBody(context));
+                .method(requestMethod(), HttpRequest.BodyPublishers.ofString(body));
 
         task.getHeaders().forEach((name, values) -> {
             values.forEach(value -> {
@@ -56,20 +60,26 @@ public abstract class HttpTaskExecutor implements TaskExecutor {
             });
         });
 
-        return requestBuilder.build();
+        final HttpRequest httpRequest = requestBuilder.build();
+        final HttpRequestDto httpRequestDto = requestResponseMapper.toDto(httpRequest);
+        httpRequestDto.setBody(body);
+        context.setRequest(httpRequestDto);
+
+        return httpRequest;
     }
 
     abstract protected String requestMethod();
 
-    abstract protected HttpRequest.BodyPublisher requestBody(TaskExecutionContext context);
+    private String evaluateRequestBody(TaskExecutionContext context) {
+        return requestBodyFactory.buildBody(context);
+    }
 
     private HttpRequest.Builder createRequestBuilder() {
         return HttpRequest.newBuilder();
     }
 
-    private void runRequest(TaskExecutionContext context, HttpRequest httpRequest) {
+    private void runRequest(HttpRequest httpRequest, TaskExecutionContext context) {
         log.info("runRequest: {} {}", httpRequest.method(), httpRequest.uri());
-        context.setRequest(requestResponseMapper.toDto(httpRequest));
 
         FunctionCallStopwatch<Optional<HttpResponse<String>>> stopWatch = new FunctionCallStopwatch<>();
         stopWatch

@@ -27,12 +27,15 @@ public abstract class HttpTaskExecutorTest {
 
     protected HttpClientFactory httpClientFactory;
     protected HttpRequestResponseMapper httpRequestResponseMapper;
+    protected RequestBodyFactory requestBodyFactory;
     protected HttpTaskExecutor httpTaskExecutor;
 
     @BeforeEach
     void setUp() {
         httpClientFactory = createHttpClientFactory();
         httpRequestResponseMapper = createHttpRequestResponseMapper();
+        requestBodyFactory = mock(RequestBodyFactory.class);
+        when(requestBodyFactory.buildBody(any())).thenReturn("the body of the request");
     }
 
     protected HttpClientFactory createHttpClientFactory() {

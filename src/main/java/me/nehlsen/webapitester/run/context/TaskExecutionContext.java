@@ -12,15 +12,18 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Getter @Setter
 public class TaskExecutionContext {
+
     public enum RequestFailedReason {
         NotFailed,
         HttpTimeout,
         OtherReason,
     }
 
+    private final UUID uuid = UUID.randomUUID();
     private final PlanExecutionContext planExecutionContext;
     private final TaskExecutionContext previous;
 

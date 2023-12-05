@@ -11,7 +11,7 @@ class HttpGetTaskExecutorTest extends HttpTaskExecutorTest {
     @BeforeEach
     void setUp() {
         super.setUp();
-        httpTaskExecutor = new HttpGetTaskExecutor(httpClientFactory, httpRequestResponseMapper);
+        httpTaskExecutor = new HttpGetTaskExecutor(httpClientFactory, httpRequestResponseMapper, requestBodyFactory);
     }
 
     @Test

@@ -4,7 +4,7 @@ import me.nehlsen.webapitester.api.ScheduleResponse;
 import me.nehlsen.webapitester.api.assertion.AssertionDto;
 import me.nehlsen.webapitester.api.assertion.CreateAssertionDto;
 import me.nehlsen.webapitester.api.plan.CreatePlanDto;
-import me.nehlsen.webapitester.api.plan.PlanExecutionRecordDto;
+import me.nehlsen.webapitester.api.record.PlanExecutionRecordDto;
 import me.nehlsen.webapitester.api.task.CreateTaskDto;
 import me.nehlsen.webapitester.api.plan.PlanDto;
 import me.nehlsen.webapitester.api.task.TaskDto;

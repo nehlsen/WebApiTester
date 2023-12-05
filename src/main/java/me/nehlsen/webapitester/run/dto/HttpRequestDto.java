@@ -10,6 +10,5 @@ public class HttpRequestDto {
     private String method;
     private String uri;
     private Map<String, List<String>> headers;
-
-    private int bodySize;
+    private String body; // FIXME limit to e.g. 10kb
 }

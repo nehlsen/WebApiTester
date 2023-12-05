@@ -13,8 +13,12 @@ import java.net.http.HttpRequest;
 @Component
 public class HttpGetTaskExecutor extends HttpTaskExecutor {
 
-    public HttpGetTaskExecutor(HttpClientFactory httpClientFactory, HttpRequestResponseMapper requestResponseMapper) {
-        super(httpClientFactory, requestResponseMapper);
+    public HttpGetTaskExecutor(
+            HttpClientFactory httpClientFactory,
+            HttpRequestResponseMapper requestResponseMapper,
+            RequestBodyFactory requestBodyFactory
+    ) {
+        super(httpClientFactory, requestResponseMapper, requestBodyFactory);
     }
 
     @Override
@@ -25,10 +29,5 @@ public class HttpGetTaskExecutor extends HttpTaskExecutor {
     @Override
     protected String requestMethod() {
         return "GET";
-    }
-
-    @Override
-    protected HttpRequest.BodyPublisher requestBody(TaskExecutionContext context) {
-        return HttpRequest.BodyPublishers.noBody();
     }
 }
