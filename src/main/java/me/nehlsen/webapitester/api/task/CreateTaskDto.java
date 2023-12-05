@@ -8,8 +8,6 @@ import lombok.ToString;
 import lombok.With;
 import me.nehlsen.webapitester.api.assertion.CreateAssertionDto;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

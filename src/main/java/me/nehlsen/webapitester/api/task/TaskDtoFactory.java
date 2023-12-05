@@ -6,12 +6,11 @@ import me.nehlsen.webapitester.persistence.task.HttpPostTaskEntity;
 import me.nehlsen.webapitester.persistence.task.HttpTaskEntity;
 import me.nehlsen.webapitester.persistence.task.TaskEntity;
 import me.nehlsen.webapitester.persistence.task.TaskEntityFactory;
-import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
 import me.nehlsen.webapitester.persistence.task.UnknownTaskTypeException;
+import me.nehlsen.webapitester.persistence.task.VoidTaskEntity;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
-import java.util.Map;
 import java.util.Objects;
 
 @Component

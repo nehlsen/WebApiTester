@@ -54,11 +54,11 @@ public abstract class HttpTaskExecutor implements TaskExecutor {
                 .timeout(Duration.of(DEFAULT_REQUEST_TIMEOUT_SECONDS, ChronoUnit.SECONDS))
                 .method(requestMethod(), HttpRequest.BodyPublishers.ofString(body));
 
-        task.getHeaders().forEach((name, values) -> {
-            values.forEach(value -> {
-                requestBuilder.header(name, value);
-            });
-        });
+        task.getHeaders().forEach((name, values) ->
+            values.forEach(value ->
+                requestBuilder.header(name, value)
+            )
+        );
 
         final HttpRequest httpRequest = requestBuilder.build();
         final HttpRequestDto httpRequestDto = requestResponseMapper.toDto(httpRequest);

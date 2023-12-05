@@ -1,14 +1,8 @@
 package me.nehlsen.webapitester.persistence;
 
-import java.util.UUID;
-
 public class PlanNotFoundException extends RuntimeException {
     public PlanNotFoundException(String message) {
         super(message);
-    }
-
-    public static PlanNotFoundException byUuid(UUID uuid) {
-        return byUuid(uuid.toString());
     }
 
     public static PlanNotFoundException byUuid(String uuid) {

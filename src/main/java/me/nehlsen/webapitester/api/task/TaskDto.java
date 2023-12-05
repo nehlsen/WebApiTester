@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.With;
 import me.nehlsen.webapitester.api.assertion.AssertionDto;
 
