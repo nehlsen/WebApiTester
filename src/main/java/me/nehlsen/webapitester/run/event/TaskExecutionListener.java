@@ -5,10 +5,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TaskExecutionLister {
+public class TaskExecutionListener {
     private final TaskExecutionRecorder taskExecutionRecorder;
 
-    public TaskExecutionLister(TaskExecutionRecorder taskExecutionRecorder) {
+    public TaskExecutionListener(TaskExecutionRecorder taskExecutionRecorder) {
         this.taskExecutionRecorder = taskExecutionRecorder;
     }
 

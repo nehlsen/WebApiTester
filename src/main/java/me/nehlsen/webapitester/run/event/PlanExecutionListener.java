@@ -5,10 +5,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PlanExecutionLister {
+public class PlanExecutionListener {
     private final PlanExecutionRecorder planExecutionRecorder;
 
-    public PlanExecutionLister(PlanExecutionRecorder planExecutionRecorder) {
+    public PlanExecutionListener(PlanExecutionRecorder planExecutionRecorder) {
         this.planExecutionRecorder = planExecutionRecorder;
     }
 
