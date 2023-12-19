@@ -69,12 +69,14 @@ public class ExecutionRecordMapperTest {
         entity.setMethod("MOCK");
         entity.setUri("https://some.sample.com/path?variable=value");
         entity.setHeaders(Map.of("Some-Header", List.of("some value")));
+        entity.setBody("some request data");
 
         final TaskExecutionRecordDto.RequestDto dto = mapper.requestRecordEntityToDto(entity);
 
         assertThat(dto.getMethod()).isEqualTo(entity.getMethod());
         assertThat(dto.getUri()).isEqualTo(entity.getUri());
         assertThat(dto.getHeaders()).isEqualTo(entity.getHeaders());
+        assertThat(dto.getBody()).isEqualTo(entity.getBody());
     }
 
     @Test

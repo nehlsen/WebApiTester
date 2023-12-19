@@ -22,6 +22,7 @@ public class TaskExecutionRecordDto {
         private String method;
         private String uri;
         private Map<String, List<String>> headers;
+        private String body;
     }
 
     @Data
