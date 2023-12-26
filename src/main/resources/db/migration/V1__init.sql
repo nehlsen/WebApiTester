@@ -1,131 +1,131 @@
 CREATE TABLE null_assertions
 (
-    http_task_entity_uuid BINARY (16) NOT NULL,
-    assertions_uuid BINARY (16) NOT NULL
+    http_task_entity_uuid UUID NOT NULL,
+    assertions_uuid       UUID NOT NULL
 );
 
 CREATE TABLE plan
 (
-    uuid BINARY (16) NOT NULL,
-    name            VARCHAR(255) NULL,
-    schedule        VARCHAR(255) NULL,
-    schedule_active BIT(1)       NOT NULL,
-    created         datetime     NULL,
-    updated         datetime     NULL,
+    uuid            UUID    NOT NULL,
+    name            VARCHAR(255),
+    schedule        VARCHAR(255),
+    schedule_active BOOLEAN NOT NULL,
+    created         TIMESTAMP WITHOUT TIME ZONE,
+    updated         TIMESTAMP WITHOUT TIME ZONE,
     CONSTRAINT pk_plan PRIMARY KEY (uuid)
 );
 
 CREATE TABLE plan_execution_record
 (
-    uuid BINARY (16) NOT NULL,
-    plan_uuid BINARY (16) NULL,
-    start_time_epoch_millis BIGINT   NOT NULL,
-    end_time_epoch_millis   BIGINT   NOT NULL,
-    result_positive         BIT(1)   NOT NULL,
-    created                 datetime NULL,
-    updated                 datetime NULL,
+    uuid                    UUID    NOT NULL,
+    plan_uuid               UUID,
+    start_time_epoch_millis BIGINT  NOT NULL,
+    end_time_epoch_millis   BIGINT  NOT NULL,
+    result_positive         BOOLEAN NOT NULL,
+    created                 TIMESTAMP WITHOUT TIME ZONE,
+    updated                 TIMESTAMP WITHOUT TIME ZONE,
     CONSTRAINT pk_plan_execution_record PRIMARY KEY (uuid)
 );
 
 CREATE TABLE plan_tasks
 (
-    plan_entity_uuid BINARY (16) NOT NULL,
-    tasks_uuid BINARY (16) NOT NULL
+    plan_entity_uuid UUID NOT NULL,
+    tasks_uuid       UUID NOT NULL
 );
 
 CREATE TABLE t_assertion
 (
-    uuid BINARY (16) NOT NULL,
-    dtype                       VARCHAR(31) NULL,
-    created                     datetime    NULL,
-    updated                     datetime    NULL,
-    maximum_request_time_millis BIGINT      NOT NULL,
-    expected_status_code        INT         NOT NULL,
+    uuid                        UUID    NOT NULL,
+    dtype                       VARCHAR(31),
+    created                     TIMESTAMP WITHOUT TIME ZONE,
+    updated                     TIMESTAMP WITHOUT TIME ZONE,
+    maximum_request_time_millis BIGINT,
+    expected_status_code        INTEGER,
     CONSTRAINT pk_t_assertion PRIMARY KEY (uuid)
 );
 
 CREATE TABLE task
 (
-    uuid BINARY (16) NOT NULL,
-    dtype   VARCHAR(31)  NULL,
-    name    VARCHAR(255) NULL,
-    created datetime     NULL,
-    updated datetime     NULL,
-    uri     VARCHAR(255) NULL,
+    uuid    UUID NOT NULL,
+    dtype   VARCHAR(31),
+    name    VARCHAR(255),
+    created TIMESTAMP WITHOUT TIME ZONE,
+    updated TIMESTAMP WITHOUT TIME ZONE,
+    uri     BYTEA,
     CONSTRAINT pk_task PRIMARY KEY (uuid)
 );
 
 CREATE TABLE task_assertions
 (
-    task_entity_uuid BINARY (16) NOT NULL,
-    assertions_uuid BINARY (16) NOT NULL
+    task_entity_uuid UUID NOT NULL,
+    assertions_uuid  UUID NOT NULL
 );
 
 CREATE TABLE task_execution_record
 (
-    uuid BINARY (16) NOT NULL,
-    plan_execution_record_uuid BINARY (16) NULL,
-    task_uuid BINARY (16) NULL,
-    start_time_epoch_millis BIGINT   NOT NULL,
-    end_time_epoch_millis   BIGINT   NOT NULL,
-    result_positive         BIT(1)   NOT NULL,
-    request_uuid BINARY (16) NULL,
-    response_uuid BINARY (16) NULL,
-    created                 datetime NULL,
-    updated                 datetime NULL,
+    uuid                       UUID    NOT NULL,
+    plan_execution_record_uuid UUID,
+    task_uuid                  UUID,
+    start_time_epoch_millis    BIGINT  NOT NULL,
+    end_time_epoch_millis      BIGINT  NOT NULL,
+    result_positive            BOOLEAN NOT NULL,
+    request_uuid               UUID,
+    response_uuid              UUID,
+    created                    TIMESTAMP WITHOUT TIME ZONE,
+    updated                    TIMESTAMP WITHOUT TIME ZONE,
     CONSTRAINT pk_task_execution_record PRIMARY KEY (uuid)
 );
 
 CREATE TABLE task_execution_record_request
 (
-    uuid BINARY (16) NOT NULL,
-    method  VARCHAR(255) NULL,
-    uri     VARCHAR(255) NULL,
-    body    LONGTEXT     NULL,
-    created datetime     NULL,
-    updated datetime     NULL,
+    uuid    UUID NOT NULL,
+    method  VARCHAR(255),
+    uri     VARCHAR(255),
+    body    VARCHAR(32600),
+    created TIMESTAMP WITHOUT TIME ZONE,
+    updated TIMESTAMP WITHOUT TIME ZONE,
     CONSTRAINT pk_task_execution_record_request PRIMARY KEY (uuid)
 );
 
 CREATE TABLE task_execution_record_request_headers
 (
-    task_execution_record_request_uuid BINARY (16) NOT NULL,
-    header_value BLOB         NULL,
-    header_name  VARCHAR(255) NOT NULL,
+    task_execution_record_request_uuid UUID         NOT NULL,
+    header_value VARCHAR(255) ARRAY,
+    header_name                        VARCHAR(255) NOT NULL,
     CONSTRAINT pk_task_execution_record_request_headers PRIMARY KEY (task_execution_record_request_uuid, header_name)
 );
 
 CREATE TABLE task_execution_record_response
 (
-    uuid BINARY (16) NOT NULL,
-    status_code          INT      NOT NULL,
-    body                 LONGTEXT NULL,
-    response_time_millis BIGINT   NOT NULL,
-    created              datetime NULL,
-    updated              datetime NULL,
+    uuid                 UUID    NOT NULL,
+    status_code          INTEGER NOT NULL,
+    body                 VARCHAR(32600),
+    response_time_millis BIGINT  NOT NULL,
+    created              TIMESTAMP WITHOUT TIME ZONE,
+    updated              TIMESTAMP WITHOUT TIME ZONE,
     CONSTRAINT pk_task_execution_record_response PRIMARY KEY (uuid)
 );
 
 CREATE TABLE task_execution_record_response_headers
 (
-    task_execution_record_response_uuid BINARY (16) NOT NULL,
-    header_value BLOB         NULL,
-    header_name  VARCHAR(255) NOT NULL,
+    task_execution_record_response_uuid UUID         NOT NULL,
+    header_value VARCHAR(255) ARRAY,
+    header_name                         VARCHAR(255) NOT NULL,
     CONSTRAINT pk_task_execution_record_response_headers PRIMARY KEY (task_execution_record_response_uuid, header_name)
 );
 
 CREATE TABLE task_headers
 (
-    task_uuid BINARY (16) NOT NULL,
-    header_values BLOB         NULL,
-    header_name   VARCHAR(255) NOT NULL,
+    task_uuid   UUID         NOT NULL,
+    header_values VARCHAR(255) ARRAY,
+    header_name VARCHAR(255) NOT NULL,
     CONSTRAINT pk_task_headers PRIMARY KEY (task_uuid, header_name)
 );
 
 CREATE TABLE task_parameters
 (
-    task_uuid BINARY (16) NOT NULL,
-    parameter_value VARCHAR(255) NULL,
+    task_uuid       UUID         NOT NULL,
+    parameter_value VARCHAR(255),
     parameter_name  VARCHAR(255) NOT NULL,
     CONSTRAINT pk_task_parameters PRIMARY KEY (task_uuid, parameter_name)
 );

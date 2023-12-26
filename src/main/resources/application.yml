@@ -1,0 +1,31 @@
+spring:
+#  flyway:
+#    enabled: false
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/wat'
+    username: wat
+    password: wat
+  jpa:
+    database-platform: 'org.hibernate.dialect.PostgreSQLDialect'
+    generate-ddl: false
+    properties:
+      hibernate:
+        # lazy loading of child-collections failed. this might reduce performance - maybe find another solution at a later time?
+        enable_lazy_load_no_trans: true
+
+      # uncomment following lines, start app once and there you should have an initialization sql script
+#      jakarta:
+#        persistence:
+#          schema-generation:
+#            scripts:
+#              action: create
+#              create-target: src/main/resources/sql/create-0.sql
+#              create-source: metadata
+#    show-sql: true
+  main:
+    banner-mode: off
+
+webapitester:
+  cors:
+    origins: 'http://localhost:3000'
+  default_request_timeout_seconds: 5

@@ -28,8 +28,8 @@ public class PlanExecutionRecordController {
 
     @GetMapping("/latest")
     public PlanExecutionRecordDto latest(@PathVariable String uuid) {
-        final PlanExecutionRecordEntity executionContextEntity = dataAccess.findLatestExecutionRecord(uuid);
-        return mapper.planExecutionRecordEntityToDto(executionContextEntity);
+        final PlanExecutionRecordEntity executionRecord = dataAccess.findLatestExecutionRecord(uuid);
+        return mapper.planExecutionRecordEntityToDto(executionRecord);
     }
 
     @GetMapping("/")

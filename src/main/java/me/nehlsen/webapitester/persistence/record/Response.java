@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Length;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -42,7 +43,7 @@ public class Response {
     @Column(name="header_value")
     Map<String, List<String>> headers;
 
-    @Lob
+    @Column(length=Length.LONG)
     String body;
 
     long responseTimeMillis;
