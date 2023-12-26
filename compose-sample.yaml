@@ -1,0 +1,21 @@
+version: '3.3'
+
+volumes:
+   dbdata:
+
+services:
+  wat:
+    image: ghcr.io/nehlsen/webapitester:develop
+    environment:
+      - "SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/wat"
+    ports:
+      - "8080:8080"
+
+  database:
+    image: 'postgres:15-alpine'
+    environment:
+      - "POSTGRES_USER=wat"
+      - "POSTGRES_PASSWORD=wat"
+      - "POSTGRES_DB=wat"
+    volumes:
+      - dbdata:/var/lib/postgresql/data:Z
